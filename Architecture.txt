@@ -1,0 +1,37 @@
+Architecture
+
+Atakr Overview:
+Atakr is a mobile application that allows users to browse short video-game videos that are hosted by other parties (youtube, twitch, gyfcat, etc.). The focus is on content rather than creators so it will employ a model more akin to 9gag/reddit rather than youtube. This means that usability is geared more towards being able to browse new and hot content that is frequently getting updated rather than tuning into specific creators. 
+
+Atakr will not host any of the videos itself, rather it will maintain a database of links to the appropriate services. In a sense, Atakr is simply a navigational tool, a way to place all of these similar videos together in one centralized place. Clicking on the video that you want to watch will launch the appropriate app or service. Considering my application is basically reddit with a narrower focus, I probably want to implement this function similar to how they've done it.
+
+
+CLIENT SIDE (MOBILE APPLICATION):
+-LoginActivity
+-NewAccountActivity
+-ForgottenPasswordActivity
+-MainActivity
+--Menu
+--Top Fragment
+--Hot Fragment
+--New Fragment
+-GameBrowseActivity
+-UserActivity
+
+LoginActivity(Simplified):
+-Simple login page that asks for username and password. Only accessed when a user deliberately logs out of their account. Otherwise, user will always be signed in to their account after sign-up.
+-Designated as simplified because I do not have the resources to immediately design a well-implemented login activity (for example, on the standards of instagram).
+
+NewAccountActivity(Simplified):
+-Upon installation, this is the activity the user is lead to when the application is launched. It simply asks for a username, a password, and for a confirmation on the password. Once the user creates an account the user is navigated to the MainActivity. The NewAccountActivity will not be accessible unless the user deliberately signs out (navigating to the LoginActivity) and clicks on "New User".
+
+MainActivity:
+-The top contains a menu button, a search bar, and a user profile button. Menu allows you to navigate to games, content genre, and game genre. (look to twitch for inspiration)
+-Under top appbar is a viewpager navigational tool that allows user to slide between the three categories (top, hot, new). On top, there will be a dropdown menu that allows user to select time range; default is daily. Above this secondary appbar is an appbar sized empty space that slides up when the user scrolls down. When the user has selected a specific game, game genre, or content genre that name will be placed here.
+
+GameBrowseActivity:
+-Displays a gridview list of rectangular images that hold pictures of various video games. The titles of the games are displayed on the bottom of the images. Videos are sorted by popularity (measured in total views). Selecting a game navigates to MainActivity and the list of displayed videos has video game title as a selection.
+
+UserActivity(unimplemented):
+-Due to time constraints and human capital constraints, this activity will remain unimplemented and will be categorized as TODO. While the design and functionality are not defined as of right now, the general purpose of this activity is to serve as a portal to user-related settings, history, and preferences.
+

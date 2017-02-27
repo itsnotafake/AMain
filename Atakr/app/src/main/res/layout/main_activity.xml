@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:color="@color/colorPrimaryDark">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/main_activity_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:theme="@style/toolbar" />
+
+    <fragment
+        android:name="templar.atakr.MainFragment"
+        android:id="@+id/main_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="?actionBarSize"
+        tools:layout="@layout/fragment_main" />
+</FrameLayout>
