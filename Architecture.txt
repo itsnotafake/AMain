@@ -9,29 +9,36 @@ Atakr will not host any of the videos itself, rather it will maintain a database
 CLIENT SIDE (MOBILE APPLICATION):
 -LoginActivity
 -NewAccountActivity
--ForgottenPasswordActivity
 -MainActivity
 --Menu
---Top Fragment
---Hot Fragment
---New Fragment
--GameBrowseActivity
--UserActivity
+--BrowseFragment
+---TopTab
+---HotTab
+---NewTab
+--GameBrowseFragment
+--SearchFragment
+--UserFragment(TODO)
 
-LoginActivity(Simplified):
+LoginActivity(
 -Simple login page that asks for username and password. Only accessed when a user deliberately logs out of their account. Otherwise, user will always be signed in to their account after sign-up.
--Designated as simplified because I do not have the resources to immediately design a well-implemented login activity (for example, on the standards of instagram).
+-Designated as simplified because I do not have the resources to immediately design a well-implemented login activity (for example, on the standards of 
 
 NewAccountActivity(Simplified):
--Upon installation, this is the activity the user is lead to when the application is launched. It simply asks for a username, a password, and for a confirmation on the password. Once the user creates an account the user is navigated to the MainActivity. The NewAccountActivity will not be accessible unless the user deliberately signs out (navigating to the LoginActivity) and clicks on "New User".
+-Upon installation, this e activity the user is lead to when the application is launched. It simply asks for a username, a password, and for a confirmation on the password. Once the user creates an account the user is navigated to the MainActivity. The NewAccountActivity will not be accessible unless the user deliberately signs out (navigating to the LoginActivity) and clicks on "New User".
 
 MainActivity:
--The top contains a menu button, a search bar, and a user profile button. Menu allows you to navigate to games, content genre, and game genre. (look to twitch for inspiration)
--Under top appbar is a viewpager navigational tool that allows user to slide between the three categories (top, hot, new). On top, there will be a dropdown menu that allows user to select time range; default is daily. Above this secondary appbar is an appbar sized empty space that slides up when the user scrolls down. When the user has selected a specific game, game genre, or content genre that name will be placed here.
+-A simple toolbar that holds a menu button, a search bar, and a user profile pic/button. Menu allows you to navigate to games, content genre, and game genre (look to twitch for inspiration). Underneath the toolbar is a frame that will hold the app's various fragments.
 
-GameBrowseActivity:
+BrowseFragment:
+-An appbar of size ?appbarsize x 2. The first instance of appbarsize is blank by default but if the user categorizes (by game, game genre, or video genre) this space will hold the name of the current category.
+- The second instance of appbarsize contains the three tabs (top, hot, new). Top will have a little arrow next to it. On the arrow's click a small menu will drop allowing the user to choose the range of Top videos (day, week, month, year, alltime).
+
+GameBrowseFragment:
 -Displays a gridview list of rectangular images that hold pictures of various video games. The titles of the games are displayed on the bottom of the images. Videos are sorted by popularity (measured in total views). Selecting a game navigates to MainActivity and the list of displayed videos has video game title as a selection.
 
-UserActivity(unimplemented):
--Due to time constraints and human capital constraints, this activity will remain unimplemented and will be categorized as TODO. While the design and functionality are not defined as of right now, the general purpose of this activity is to serve as a portal to user-related settings, history, and preferences.
+SearchFragment:
+-Their are five categories whose contents may be returned to the search query: games, videos, game genre, video genre, and users. The name of the category only appears in the list if it has any results matching the query string. It is possible all five categories will be present and it is also possible that only 1 category will be present. Since I do not have the resources to implement a good search function, I will stick with only strings that match the search query letter for letter. Of course, this also means that 'abc' can return 'dfabcge'.
+
+UserFragment(unimplemented):
+-Due to time constraints and human capital constraints, this activity will remain unimplemented and will be categorized as TODO. While the design and functionality are not defined as of right now, the general purpose of this activity is rve as a portal to user-related settings, history, and preferences.
 
