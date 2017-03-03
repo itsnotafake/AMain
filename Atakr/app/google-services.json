@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "51210413831",
+    "firebase_url": "https://atakr-7545b.firebaseio.com",
+    "project_id": "atakr-7545b",
+    "storage_bucket": "atakr-7545b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51210413831:android:23c77bcaa5ac9dd6",
+        "android_client_info": {
+          "package_name": "templar.atakr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "51210413831-hbgsu18r559a5sju0queectje1i9bsjm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "templar.atakr",
+            "certificate_hash": "20fc2c01031a3279ad1f58f99fdaf97d945bc886"
+          }
+        },
+        {
+          "client_id": "51210413831-u1fv97ak1tb1bgkccra7u1ocuelg1qvd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKd1hgIZ-jFU7rw_7BYeLF4dOZlIKze_o"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "51210413831-u1fv97ak1tb1bgkccra7u1ocuelg1qvd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
