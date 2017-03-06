@@ -8,6 +8,7 @@
     <string name="main_navigation_icon_CD">Your Profile Picture</string>
 
     <string name="action_settings">Title</string>
+    <string name="toolbar_search">Search</string>
     <string name="navigation_menu_browse">Browse</string>
     <string name="navigation_menu_games">Games</string>
     <string name="navigation_menu_game_genre">Game Genre</string>

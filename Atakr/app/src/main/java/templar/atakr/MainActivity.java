@@ -1,20 +1,16 @@
 package templar.atakr;
 
 import android.app.Activity;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ListView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +22,7 @@ import java.util.Arrays;
  * Created by Devin on 2/20/2017.
  */
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int RC_SIGN_IN = 111;
@@ -52,9 +48,8 @@ public class MainActivity extends FragmentActivity {
         //Firebase Variable initialization
         initializeAuthStateListener();
 
-        //Drawer related stuff
+        //Drawer&Toolbar related initialization
         initializeDrawer();
-
     }
 
     @Override
@@ -67,6 +62,24 @@ public class MainActivity extends FragmentActivity {
     protected void onPause(){
         super.onPause();
         mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        //Inflate the main_menu; adding items to action bar if present
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        int id = menuItem.getItemId();
+        switch(id){
+            case(R.id.toolbar_search):
+                //TODO
+            default:
+                return true;
+        }
     }
 
     @Override
@@ -107,6 +120,9 @@ public class MainActivity extends FragmentActivity {
     private void initializeDrawer(){
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         mToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        mToolbar.setLogo(R.mipmap.atakr_logo2);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
