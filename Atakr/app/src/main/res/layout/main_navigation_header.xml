@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/navigation_header_height"
+    android:background="@drawable/navigation_header_background"
+    android:paddingBottom="@dimen/navigation_drawer_vertical_margin"
+    android:paddingLeft="@dimen/navigation_drawer_horiztonal_margin"
+    android:paddingRight="@dimen/navigation_drawer_horiztonal_margin"
+    android:paddingTop="@dimen/navigation_drawer_vertical_margin"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:orientation="vertical"
+    android:gravity="bottom">
+
+    <ImageView
+        android:id="@+id/main_navigation_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/navigation_header_vertical_spacing"
+        android:src="@drawable/account_icon"
+        android:contentDescription="@string/main_navigation_icon_CD"/>
+
+    <TextView android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/navigation_header_vertical_spacing"
+        android:text="Username"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+</LinearLayout>
