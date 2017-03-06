@@ -23,6 +23,9 @@
             android:title="@string/navigation_menu_account">
             <menu>
                 <item
+                    android:id="@+id/navigation_menu_profile"
+                    android:title="@string/toolbar_profile"/>
+                <item
                     android:id="@+id/navigation_menu_signout"
                     android:title="@string/navigation_menu_signout"/>
             </menu>

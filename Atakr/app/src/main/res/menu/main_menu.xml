@@ -9,4 +9,10 @@
         android:icon="@android:drawable/ic_menu_search"
         atakr:showAsAction="collapseActionView|ifRoom"
         atakr:actionViewClass="android.support.v7.widget.SearchView"/>
+
+    <item
+        android:id="@+id/toolbar_profile"
+        android:title="@string/toolbar_profile"
+        android:icon="@drawable/account_icon"
+        atakr:showAsAction="always"/>
 </menu>
