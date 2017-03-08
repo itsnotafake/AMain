@@ -1,6 +1,7 @@
 package templar.atakr;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,9 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
         //Firebase Variable initialization
         initializeAuthStateListener();
-
         //Drawer&Toolbar related initialization
         initializeDrawer();
+
+        if(savedInstanceState == null){
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_fragment_container, new MainFragment())
+                    .commit();
+        }
     }
 
     @Override
@@ -76,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         int id = menuItem.getItemId();
         switch(id){
             case(R.id.toolbar_search):
-                //TODO
+                //TODO 'implement search fragment and action'
             default:
                 return true;
         }
@@ -99,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null){
-                    //TODO
+                    //TODO 'user is signed in'
                     //user is signed in
                 }else{
                     startActivityForResult(
@@ -121,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         mToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mToolbar.setLogo(R.mipmap.atakr_logo2);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
                 mDrawerLayout,
