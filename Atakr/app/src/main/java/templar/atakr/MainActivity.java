@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -17,8 +18,16 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
+
+import templar.atakr.DatabaseObjects.User;
 
 /**
  * Created by Devin on 2/20/2017.
@@ -34,12 +43,16 @@ public class MainActivity extends AppCompatActivity {
     //Firebase related variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mUserDatabaseReference;
 
     //Layout related variables
     private DrawerLayout mDrawerLayout;
     private Toolbar mToolbar;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;
+
+    private String mUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -48,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         mActivity = this;
 
         //Firebase Variable initialization
+        initializeDatabase();
         initializeAuthStateListener();
         //Drawer&Toolbar related initialization
         initializeDrawer();
@@ -104,10 +118,21 @@ public class MainActivity extends AppCompatActivity {
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(user != null){
-                    //TODO 'user is signed in'
-                    //user is signed in
+                final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if(firebaseUser != null){
+                    mUserDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        private String firebaseUserID = firebaseUser.getUid();
+                        private String firebaseDisplayName = firebaseUser.getDisplayName();
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(!dataSnapshot.hasChild(firebaseUserID)){
+                                User user = new User(firebaseUserID, firebaseDisplayName);
+                                mUserDatabaseReference.child(firebaseUserID).setValue(user);
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {}
+                    });
                 }else{
                     startActivityForResult(
                             AuthUI.getInstance()
@@ -121,6 +146,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    //initializes our Firebase database
+    private void initializeDatabase(){
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mUserDatabaseReference = mFirebaseDatabase.getReference().child("Users");
     }
 
     //Initializes our drawer

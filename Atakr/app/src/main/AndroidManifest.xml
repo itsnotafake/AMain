@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="templar.atakr">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/atakr_logo2"
@@ -20,6 +22,20 @@
         <activity
             android:name=".ShareActivity"
             android:theme="@style/Theme.AppCompat.Dialog.Alert">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                    android:host="www.youtube.com"
+                    android:mimeType="text/*"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data
+                    android:host="m.youtube.com"
+                    android:mimeType="text/plain"/>
+            </intent-filter>
         </activity>
     </application>
 
