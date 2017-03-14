@@ -5,4 +5,21 @@
     <dimen name="navigation_header_height">160dp</dimen>
     <dimen name="navigation_drawer_horiztonal_margin">16dp</dimen>
     <dimen name="navigation_drawer_vertical_margin">16dp</dimen>
+
+    <!-- SHARE ACTIVITY DIMENS -->
+    <dimen name="share_username_padding">6dp</dimen>
+    <dimen name="share_username_textSize">16sp</dimen>
+
+    <dimen name="share_cardView_margin">8dp</dimen>
+    <dimen name="share_youtube_thumbnail_margin">4dp</dimen>
+    <dimen name="share_cardView_text_margin">4dp</dimen>
+    <dimen name="share_cardView_title_textSize">18sp</dimen>
+    <dimen name="share_cardView_textSize">12sp</dimen>
+
+    <dimen name="share_editText_width">150dp</dimen>
+    <dimen name="share_editText_horizontal_margin">8dp</dimen>
+    <dimen name="share_editText_vertical_margin">4dp</dimen>
+    <dimen name="share_editText_textSize">12sp</dimen>
+    <dimen name="share_button_margin">8dp</dimen>
+    <dimen name="share_button_textSize">16sp</dimen>
 </resources>

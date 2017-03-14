@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -22,7 +23,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;
 
-    private String mUsername;
+    public static String mUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -112,6 +112,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == RC_SIGN_IN){
+            if(resultCode == RESULT_CANCELED){
+                finish();
+            }
+        }
+    }
+
     //Initializes our Authentication State Listener
     private void initializeAuthStateListener(){
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -120,19 +130,7 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if(firebaseUser != null){
-                    mUserDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        private String firebaseUserID = firebaseUser.getUid();
-                        private String firebaseDisplayName = firebaseUser.getDisplayName();
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(!dataSnapshot.hasChild(firebaseUserID)){
-                                User user = new User(firebaseUserID, firebaseDisplayName);
-                                mUserDatabaseReference.child(firebaseUserID).setValue(user);
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {}
-                    });
+                    initializeUser();
                 }else{
                     startActivityForResult(
                             AuthUI.getInstance()
@@ -187,6 +185,27 @@ public class MainActivity extends AppCompatActivity {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
+        });
+    }
+
+    //Creates new User account in User database if new User
+    private void initializeUser(){
+        mUserDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            private FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+            private String firebaseUserID = firebaseUser.getUid();
+            private String firebaseDisplayName = firebaseUser.getDisplayName();
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.hasChild(firebaseUserID)){
+                    User user = new User(firebaseUserID, firebaseDisplayName);
+                    mUserDatabaseReference.child(firebaseUserID).setValue(user);
+                }
+                mUsername = firebaseDisplayName;
+                TextView tv = (TextView)findViewById(R.id.main_navigation_user);
+                tv.setText(mUsername);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
         });
     }
 }

@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">Atakr</string>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" translatable="false">Atakr</string>
 
     <!-- MAIN ACTIVITY STRINGS -->
     <string name="drawer_open">side menu opened</string>
@@ -16,6 +16,16 @@
     <string name="navigation_menu_video_genre">Video Genre</string>
     <string name="navigation_menu_account">Account</string>
     <string name="navigation_menu_signout">Sign Out</string>
+
+    <!-- SHARE ACTIVITY STRINGS -->
+    <string name="share_profilepicture_CD">Profile Picture</string>
+    <string name="share_cardview_thumbnail">Youtube Thumbnail</string>
+    <string name="share_cardview_title">Video Title</string>
+    <string name="share_cardview_uploader">Uploader</string>
+    <string name="share_cardview_views">Views</string>
+    <string name="share_atakrTitle">(optional) New Title</string>
+    <string name="share_atakrGame">(optional) Game</string>
+    <string name="share_button">Post</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

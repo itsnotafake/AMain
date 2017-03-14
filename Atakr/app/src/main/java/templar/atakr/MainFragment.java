@@ -3,16 +3,16 @@ package templar.atakr;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 public class MainFragment extends Fragment {
+    private static final String TAG = MainFragment.class.getSimpleName();
 
-    public MainFragment() {
-        // Required empty public constructor
-    }
+    public MainFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class MainFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e(TAG, "Button clicked");
                 Intent intent = new Intent(getActivity(), ShareActivity.class);
                 startActivity(intent);
             }

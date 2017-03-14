@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/share_youtubeThumbnail"
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/share_youtube_thumbnail_margin"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/com_facebook_button_icon_blue"
+        android:contentDescription="@string/share_cardview_thumbnail"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/share_cardView_text_margin"
+        android:layout_marginStart="@dimen/share_cardView_text_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/share_youtubeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_cardview_title"
+            android:textColor="@color/tw__composer_black"
+            android:textSize="@dimen/share_cardView_title_textSize"
+            android:textStyle="bold"
+            tools:text="Video Title"/>
+
+        <TextView
+            android:id="@+id/share_youtubeUploader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_cardview_uploader"
+            android:textSize="@dimen/share_cardView_textSize"
+            android:textColor="@color/tw__composer_deep_gray"
+            tools:text="Video Uploader"/>
+
+        <TextView
+            android:id="@+id/share_youtubeViews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_cardview_views"
+            android:textSize="@dimen/share_cardView_textSize"
+            android:textColor="@color/tw__composer_deep_gray"
+            tools:text="Video Views"/>
+
+    </LinearLayout>
+
+</LinearLayout>

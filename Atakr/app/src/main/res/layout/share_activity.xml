@@ -1,12 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="@color/tw__solid_white">
 
-    <TextView
-        android:id="@+id/share_text"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/share_appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/share_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimaryDark">
+
+            <ImageView
+                android:id="@+id/share_profilepicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/share_profilepicture_CD"
+                android:src="@drawable/account_anon_icon" />
+
+            <TextView
+                android:id="@+id/share_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/share_username_padding"
+                android:paddingLeft="@dimen/share_username_padding"
+                android:textSize="@dimen/share_username_textSize"
+                tools:text="Username" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <ProgressBar
+        android:id="@+id/share_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World"/>
-</FrameLayout>
+        style="?android:progressBarStyleLarge"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"/>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        card_view:cardBackgroundColor="@color/colorPrimary"
+        android:layout_margin="@dimen/share_cardView_margin">
+
+        <include layout="@layout/share_cardview"/>
+    </android.support.v7.widget.CardView>
+
+    <EditText
+        android:id="@+id/share_atakrtitle_edittext"
+        android:layout_width="@dimen/share_editText_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/share_editText_vertical_margin"
+        android:layout_marginBottom="@dimen/share_editText_vertical_margin"
+        android:layout_marginLeft="@dimen/share_editText_horizontal_margin"
+        android:layout_marginStart="@dimen/share_editText_horizontal_margin"
+        android:layout_marginRight="@dimen/share_editText_horizontal_margin"
+        android:layout_marginEnd="@dimen/share_editText_horizontal_margin"
+        android:inputType="text"
+        android:textColor="@color/tw__composer_black"
+        android:textSize="@dimen/share_editText_textSize"
+        android:hint="@string/share_atakrTitle"
+        android:textColorHint="@color/tw__composer_deep_gray"/>
+
+    <EditText
+        android:id="@+id/share_game_edittext"
+        android:layout_width="@dimen/share_editText_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/share_editText_vertical_margin"
+        android:layout_marginBottom="@dimen/share_editText_vertical_margin"
+        android:layout_marginLeft="@dimen/share_editText_horizontal_margin"
+        android:layout_marginStart="@dimen/share_editText_horizontal_margin"
+        android:layout_marginRight="@dimen/share_editText_horizontal_margin"
+        android:layout_marginEnd="@dimen/share_editText_horizontal_margin"
+        android:inputType="textAutoComplete"
+        android:textColor="@color/tw__composer_black"
+        android:textSize="@dimen/share_editText_textSize"
+        android:hint="@string/share_atakrGame"
+        android:textColorHint="@color/tw__composer_deep_gray"/>
+
+    <Button
+        android:id="@+id/share_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@color/colorAccentTransparent"
+        android:layout_marginBottom="@dimen/share_button_margin"
+        android:layout_marginEnd="@dimen/share_button_margin"
+        android:layout_marginRight="@dimen/share_button_margin"
+        android:textSize="@dimen/share_button_textSize"
+        android:text="@string/share_button" />
+</LinearLayout>

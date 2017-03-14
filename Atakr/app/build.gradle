@@ -21,9 +21,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    /*androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    })*/
 
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:support-v4:25.2.0'
@@ -34,6 +34,7 @@ dependencies {
 
     //Youtube API
     compile files('libs/YouTubeAndroidPlayerApi.jar')
+    compile 'com.google.apis:google-api-services-youtube:v3-rev182-1.22.0'
 
     //Firebase dependencies
     compile 'com.google.firebase:firebase-core:10.2.0'

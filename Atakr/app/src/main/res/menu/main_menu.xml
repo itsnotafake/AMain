@@ -13,6 +13,6 @@
     <item
         android:id="@+id/toolbar_profile"
         android:title="@string/toolbar_profile"
-        android:icon="@drawable/account_icon"
+        android:icon="@drawable/account_anon_icon"
         atakr:showAsAction="always"/>
 </menu>
