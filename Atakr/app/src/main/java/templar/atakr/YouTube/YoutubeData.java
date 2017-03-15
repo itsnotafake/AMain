@@ -64,7 +64,7 @@ import java.util.List;
             Video video = videoList.get(0);
             VideoSnippet vSn = video.getSnippet();
             VideoStatistics vSt = video.getStatistics();
-            String title = titleLimit(vSn.getTitle());
+            String title = vSn.getTitle();
             ThumbnailDetails thumbnails = vSn.getThumbnails();
             Thumbnail thumbnail = thumbnails.getDefault();
             String uploader = vSn.getChannelTitle();
@@ -78,12 +78,5 @@ import java.util.List;
             Log.e(TAG, "Error " + e);
         }
         return bundle;
-    }
-
-    private static String titleLimit(String title){
-        if(title.length() > 20){
-            title = title.substring(0,19) + "...";
-        }
-        return title;
     }
 }

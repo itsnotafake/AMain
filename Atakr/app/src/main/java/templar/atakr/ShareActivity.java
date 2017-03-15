@@ -108,9 +108,15 @@ public class ShareActivity extends AppCompatActivity {
                 mYoutubeThumbnailUrl = videoContent.getString(YoutubeData.VIDEO_THUMBNAIL);
 
                 loadThumbnail(mYoutubeThumbnailUrl);
-                shareYoutubeTitle.setText(mYoutubeTitle);
-                shareYoutubeUploader.setText(mYoutubeUploader);
+
+                //Title and View have edited text rather than the raw values,
+                //so we create the editted strings and then place them in their
+                //respective text views
+                String titleString = titleLimit(mYoutubeTitle);
                 String viewString = mYoutubeViews + " Views";
+
+                shareYoutubeTitle.setText(titleString);
+                shareYoutubeUploader.setText(mYoutubeUploader);
                 shareYoutubeViews.setText(viewString);
             }
 
@@ -176,7 +182,7 @@ public class ShareActivity extends AppCompatActivity {
                             mAtakrTitle,
                             mFirebaseAuth.getCurrentUser().getUid(),
                             mYoutubeThumbnailUrl,
-                            mYoutubeViews
+                            String.valueOf(1)
                     );
                     mVideoDatabaseReference.child(mYoutubeId).setValue(video);
                     Toast.makeText(
@@ -267,5 +273,12 @@ public class ShareActivity extends AppCompatActivity {
         }catch(InterruptedException e){
             Log.e(TAG, "InterruptedException " + e);
         }
+    }
+
+    private static String titleLimit(String title){
+        if(title.length() > 20){
+            title = title.substring(0,19) + "...";
+        }
+        return title;
     }
 }

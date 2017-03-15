@@ -13,7 +13,7 @@ public class Video {
     private String atakrName;
     private String uploader;
     //private String creator;
-    private float views;
+    private long views;
     private String youtubeThumbailUrl;
     private float popularity; // views / (current time - time uploaded) = views per time unit (in ms)
     private long timeUploaded;
@@ -28,13 +28,13 @@ public class Video {
         atakrName = aName;
         uploader = uploadedBy;
         youtubeThumbailUrl = yUrl;
-        views = Float.valueOf(v);
+        views = Long.valueOf(v);
         timeUploaded = System.currentTimeMillis();
         calculatePopularity();
     }
 
     private void calculatePopularity(){
-        if(System.currentTimeMillis() - timeUploaded > 0 && views > 0) {
+        if(System.currentTimeMillis() - timeUploaded > 0) {
             popularity = views / (System.currentTimeMillis() - timeUploaded);
         }else{
             popularity = 0;
@@ -57,8 +57,8 @@ public class Video {
     public String getUploader(){return uploader;}
     public void setUploader(String s){uploader = s;}
 
-    public float getViews(){return views;}
-    public void setViews(Float f){views = f;}
+    public long getViews(){return views;}
+    public void setViews(long l){views = l;}
 
     public String getYoutubeThumbailUrl(){return youtubeThumbailUrl;}
     public void setYoutubeThumbailUrl(String yUrl){youtubeThumbailUrl = yUrl;}
