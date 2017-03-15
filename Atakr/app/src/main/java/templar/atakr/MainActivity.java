@@ -5,16 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +28,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Arrays;
 
 import templar.atakr.DatabaseObjects.User;
+import templar.atakr.Design.AtakrPagerAdapter;
+import templar.atakr.Data.*;
 
 /**
  * Created by Devin on 2/20/2017.
@@ -51,13 +53,18 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ActionBarDrawerToggle mDrawerToggle;
     private NavigationView mNavigationView;
+    private ViewPager mViewPager;
+    private TabLayout mTabLayout;
 
     public static String mUsername;
+
+    public static final String[] MAIN_VIDEO_PROJECTION = {
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.activity_main);
         mActivity = this;
 
         //Firebase Variable initialization
@@ -66,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
         //Drawer&Toolbar related initialization
         initializeDrawer();
 
-        if(savedInstanceState == null){
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_fragment_container, new MainFragment())
-                    .commit();
-        }
+        //Setup ViewPager and Tabs
+        mViewPager = (ViewPager)findViewById(R.id.main_viewpager);
+        mViewPager.setAdapter(new AtakrPagerAdapter(getSupportFragmentManager(), this));
+        mTabLayout = (TabLayout) findViewById(R.id.main_tablayout);
+        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     @Override
@@ -155,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     //Initializes our drawer
     private void initializeDrawer(){
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
-        mToolbar = (Toolbar) findViewById(R.id.main_activity_toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mToolbar);
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -208,4 +215,5 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
 }

@@ -6,6 +6,9 @@
     <dimen name="navigation_drawer_horiztonal_margin">16dp</dimen>
     <dimen name="navigation_drawer_vertical_margin">16dp</dimen>
 
+    <!-- MAIN FRAGMENT DIMENS -->
+    <dimen name="mainfrag_top_margin">?actionBarSize</dimen>
+
     <!-- SHARE ACTIVITY DIMENS -->
     <dimen name="share_username_padding">6dp</dimen>
     <dimen name="share_username_textSize">16sp</dimen>
