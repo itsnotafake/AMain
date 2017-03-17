@@ -1,6 +1,7 @@
 package templar.atakr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -27,9 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 
-import templar.atakr.DatabaseObjects.User;
-import templar.atakr.Design.AtakrPagerAdapter;
-import templar.atakr.Data.*;
+import templar.atakr.databaseobjects.User;
+import templar.atakr.design.AtakrPagerAdapter;
+import templar.atakr.sync.VideoSyncIntentService;
 
 /**
  * Created by Devin on 2/20/2017.
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUserDatabaseReference;
+    public DatabaseReference mVideoDatabaseReference;
 
     //Layout related variables
     private DrawerLayout mDrawerLayout;
@@ -57,9 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
 
     public static String mUsername;
-
-    public static final String[] MAIN_VIDEO_PROJECTION = {
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(new AtakrPagerAdapter(getSupportFragmentManager(), this));
         mTabLayout = (TabLayout) findViewById(R.id.main_tablayout);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        //Begin syncing content provider with firebase
+        initializeVideoSync(this);
     }
 
     @Override
@@ -90,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onStop(){
+        super.onStop();
+        //TODO delete contents of Content Provider
     }
 
     @Override
@@ -157,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
     private void initializeDatabase(){
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mUserDatabaseReference = mFirebaseDatabase.getReference().child("Users");
+        mVideoDatabaseReference = mFirebaseDatabase.getReference().child("Videos");
     }
 
     //Initializes our drawer
@@ -214,6 +224,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {}
         });
+    }
+
+    //Fires off an intent to VideoSyncIntentService, syncing
+    //video data
+    private void initializeVideoSync(Context context){
+        Intent intent = new Intent(context, VideoSyncIntentService.class);
+        intent.putExtra(VideoSyncIntentService.INTENT_REQUEST, 100);
+        intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
+        startService(intent);
     }
 
 }

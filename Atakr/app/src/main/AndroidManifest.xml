@@ -37,6 +37,8 @@
                     android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
+        <service
+            android:name=".sync.VideoSyncIntentService"/>
     </application>
 
 </manifest>

@@ -19,6 +19,14 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:background="@android:color/white"/>
+
+        <ProgressBar
+            android:id="@+id/main_prgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:progressBarStyleLarge"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView

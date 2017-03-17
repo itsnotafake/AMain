@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="4dp">
+
+        <templar.atakr.design.RoundedImageView
+            android:id="@+id/video_list_image"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/account_anon_icon"
+            android:layout_margin="@dimen/video_list_image_margin"/>
+    </FrameLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/video_list_play"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/video_list_fab_margin"
+        android:layout_marginStart="@dimen/video_list_fab_margin"
+        android:layout_marginRight="@dimen/video_list_fab_margin"
+        android:layout_marginEnd="@dimen/video_list_fab_margin"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/video_list_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/video_list_title_margin"
+        android:layout_marginStart="@dimen/video_list_title_margin"
+        android:textSize="@dimen/video_list_title_normal_textsize"
+        tools:text="Video Title"/>
+
+
+
+
+</LinearLayout>

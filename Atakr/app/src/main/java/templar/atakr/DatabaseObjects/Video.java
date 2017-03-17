@@ -1,4 +1,4 @@
-package templar.atakr.DatabaseObjects;
+package templar.atakr.databaseobjects;
 
 /**
  * Created by Devin on 3/9/2017.

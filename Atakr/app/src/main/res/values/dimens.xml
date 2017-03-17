@@ -9,6 +9,12 @@
     <!-- MAIN FRAGMENT DIMENS -->
     <dimen name="mainfrag_top_margin">?actionBarSize</dimen>
 
+    <!-- VIDEO LIST DIMENS -->
+    <dimen name="video_list_image_margin">8dp</dimen>
+    <dimen name="video_list_fab_margin">4dp</dimen>
+    <dimen name="video_list_title_margin">8dp</dimen>
+    <dimen name="video_list_title_normal_textsize">16sp</dimen>
+
     <!-- SHARE ACTIVITY DIMENS -->
     <dimen name="share_username_padding">6dp</dimen>
     <dimen name="share_username_textSize">16sp</dimen>

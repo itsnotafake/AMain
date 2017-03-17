@@ -1,4 +1,4 @@
-package templar.atakr.Design;
+package templar.atakr.design;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

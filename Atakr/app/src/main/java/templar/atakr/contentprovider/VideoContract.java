@@ -1,4 +1,4 @@
-package templar.atakr.Data;
+package templar.atakr.contentprovider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
@@ -20,7 +20,7 @@ public class VideoContract {
     //data
     static final String PATH_VIDEO = "video";
 
-    static final class VideoEntry implements BaseColumns{
+    public static final class VideoEntry implements BaseColumns{
         //base CONTENT_URI used to query Video table from the Content Provider
         public static final Uri CONTENT_URI = BASE_CONTENT_URI
                         .buildUpon()

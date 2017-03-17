@@ -1,4 +1,4 @@
-package templar.atakr.Data;
+package templar.atakr.contentprovider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
