@@ -232,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(context, VideoSyncIntentService.class);
         intent.putExtra(VideoSyncIntentService.INTENT_REQUEST, 100);
         intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
+        intent.putExtra(VideoSyncIntentService.INTENT_CONTINUATION, false);
         startService(intent);
     }
 

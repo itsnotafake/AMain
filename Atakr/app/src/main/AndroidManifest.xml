@@ -19,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ShareActivity"
             android:theme="@style/AtakrDialog">
@@ -37,6 +38,12 @@
                     android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".contentprovider.VideoProvider"
+            android:exported="false"/>
+
         <service
             android:name=".sync.VideoSyncIntentService"/>
     </application>

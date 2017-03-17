@@ -27,6 +27,9 @@
     <string name="share_atakrGame">(optional) Game</string>
     <string name="share_button">Post</string>
 
+    <!-- CONTENT PROVIDER -->
+    <string name="content_authority">templar.atakr</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

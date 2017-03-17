@@ -7,12 +7,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 /**
  * Created by Devin on 3/14/2017.
  */
 
 public class VideoProvider extends ContentProvider {
+    private static final String TAG = VideoProvider.class.getSimpleName();
 
     //Constants used to match URIs with the data they are looking for.
     public static final int CODE_VIDEO = 100;
@@ -69,7 +71,7 @@ public class VideoProvider extends ContentProvider {
                 if(rowsInserted > 0){
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
-
+                Log.e(TAG, "Bulk Insert completed!");
                 return rowsInserted;
             default:
                 return super.bulkInsert(uri, values);
