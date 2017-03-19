@@ -35,7 +35,16 @@ public class AtakrPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position){
-        return VideoBrowseFragment.newInstance(position+1);
+        switch (position){
+            case 0:
+                return VideoBrowseFragment.newInstance(position);
+            case 1:
+                return VideoBrowseFragment.newInstance(position);
+            case 2:
+                return VideoBrowseFragment.newInstance(position);
+            default:
+                return null;
+        }
     }
 
     @Override

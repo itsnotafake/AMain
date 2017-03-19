@@ -78,7 +78,11 @@ public class MainActivity extends AppCompatActivity {
         initializeDrawer();
         //Setup ViewPager and Tabs
         initializeViewPager();
+    }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
         //Begin syncing content provider with firebase
         initializeVideoSync(
                 VideoSyncIntentService.MAIN_TOP_REQUEST,
