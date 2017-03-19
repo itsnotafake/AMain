@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".framework.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
         </activity>
 
         <activity
-            android:name=".ShareActivity"
+            android:name=".framework.ShareActivity"
             android:theme="@style/AtakrDialog">
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>

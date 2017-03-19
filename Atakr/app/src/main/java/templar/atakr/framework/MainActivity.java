@@ -1,4 +1,4 @@
-package templar.atakr;
+package templar.atakr.framework;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,8 +27,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.InvalidParameterException;
 import java.util.Arrays;
 
+import templar.atakr.R;
 import templar.atakr.databaseobjects.User;
 import templar.atakr.design.AtakrPagerAdapter;
 import templar.atakr.sync.VideoSyncIntentService;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 111;
 
     private Activity mActivity;
+    private Context mContext;
 
     //Firebase related variables
     private FirebaseAuth mFirebaseAuth;
@@ -66,21 +69,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mActivity = this;
+        mContext = this;
 
         //Firebase Variable initialization
         initializeDatabase();
         initializeAuthStateListener();
         //Drawer&Toolbar related initialization
         initializeDrawer();
-
         //Setup ViewPager and Tabs
-        mViewPager = (ViewPager)findViewById(R.id.main_viewpager);
-        mViewPager.setAdapter(new AtakrPagerAdapter(getSupportFragmentManager(), this));
-        mTabLayout = (TabLayout) findViewById(R.id.main_tablayout);
-        mTabLayout.setupWithViewPager(mViewPager);
+        initializeViewPager();
 
         //Begin syncing content provider with firebase
-        initializeVideoSync(this);
+        initializeVideoSync(
+                VideoSyncIntentService.MAIN_TOP_REQUEST,
+                false
+        );
     }
 
     @Override
@@ -205,6 +208,45 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //Initialize view pager along with tabs
+    private void initializeViewPager(){
+        mViewPager = (ViewPager)findViewById(R.id.main_viewpager);
+        mViewPager.setAdapter(new AtakrPagerAdapter(getSupportFragmentManager(), this));
+        mTabLayout = (TabLayout) findViewById(R.id.main_tablayout);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager){
+            @Override
+            public void onTabSelected(TabLayout.Tab tab){
+                Log.e(TAG, "Tab's position is " + tab.getPosition());
+                switch(tab.getPosition()){
+                    case 0:
+                        initializeVideoSync(
+                                VideoSyncIntentService.MAIN_TOP_REQUEST,
+                                false
+                        );
+                        break;
+
+                    case 1:
+                        initializeVideoSync(
+                                VideoSyncIntentService.MAIN_HOT_REQUEST,
+                                false
+                        );
+                        break;
+
+                    case 2:
+                        initializeVideoSync(
+                                VideoSyncIntentService.MAIN_NEW_REQUEST,
+                                false
+                        );
+                        break;
+
+                    default:
+                        throw new IllegalArgumentException("Bad Tab position");
+                }
+            }
+        });
+    }
+
     //Creates new User account in User database if new User
     private void initializeUser(){
         mUserDatabaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -226,14 +268,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //Fires off an intent to VideoSyncIntentService, syncing
-    //video data
-    private void initializeVideoSync(Context context){
-        Intent intent = new Intent(context, VideoSyncIntentService.class);
-        intent.putExtra(VideoSyncIntentService.INTENT_REQUEST, 100);
+    /**
+    Fires off an intent to VideoSyncIntentService, syncing
+    video data
+    */
+    private void initializeVideoSync(int requestCode, boolean continuation){
+        Intent intent = new Intent(mContext, VideoSyncIntentService.class);
+        intent.putExtra(VideoSyncIntentService.INTENT_REQUEST, requestCode);
         intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
-        intent.putExtra(VideoSyncIntentService.INTENT_CONTINUATION, false);
-        startService(intent);
+        intent.putExtra(VideoSyncIntentService.INTENT_CONTINUATION, continuation);
+        mContext.startService(intent);
     }
 
 }

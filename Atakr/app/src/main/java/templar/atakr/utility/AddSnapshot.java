@@ -40,8 +40,19 @@ public class AddSnapshot {
     public static long doTopSnapshotToCV(DataSnapshot dataSnapshot, int videosToLoad, Context context){
         int counter = 1;
         DataSnapshot returnSnapshot = null;
-        ContentValues[] videos =
-                new ContentValues[Iterables.size(dataSnapshot.getChildren())];
+        ContentValues[] videos;
+
+        //If this set of videos is a full set of 26 then we input
+        //25 video objects into the content provider. Otherwise the number
+        //of video objects we input is equal to the total number of video objects
+        //in the dataSnapshot (indicating we are near the end of our Firebase Databases
+        //set of videos)
+        if(Iterables.size(dataSnapshot.getChildren()) == 26){
+            videos = new ContentValues[25];
+        }else{
+            videos =
+                    new ContentValues[Iterables.size(dataSnapshot.getChildren())];
+        }
 
         try {
             for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {

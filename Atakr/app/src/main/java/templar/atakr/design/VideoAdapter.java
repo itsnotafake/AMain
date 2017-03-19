@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import templar.atakr.R;
-import templar.atakr.VideoBrowseFragment;
+import templar.atakr.framework.VideoBrowseFragment;
 
 /**
  * Created by Devin on 3/15/2017.
@@ -68,7 +68,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         return VIEW_TYPE_NORMAL;
     }
 
-    void swapCursor(Cursor newCursor){
+    public void swapCursor(Cursor newCursor){
         mCursor = newCursor;
         notifyDataSetChanged();
     }

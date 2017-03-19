@@ -1,4 +1,4 @@
-package templar.atakr;
+package templar.atakr.framework;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,6 +34,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
+import templar.atakr.R;
 import templar.atakr.databaseobjects.User;
 import templar.atakr.databaseobjects.Video;
 import templar.atakr.youtube.YoutubeData;
