@@ -215,9 +215,10 @@ public class MainActivity extends AppCompatActivity {
     //Initialize view pager along with tabs
     private void initializeViewPager(){
         mViewPager = (ViewPager)findViewById(R.id.main_viewpager);
-        mViewPager.setAdapter(new AtakrPagerAdapter(getSupportFragmentManager(), this));
+        mViewPager.setAdapter(new AtakrPagerAdapter(getSupportFragmentManager()));
         mTabLayout = (TabLayout) findViewById(R.id.main_tablayout);
         mTabLayout.setupWithViewPager(mViewPager);
+        //mViewPager.ad
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager){
             @Override
             public void onTabSelected(TabLayout.Tab tab){

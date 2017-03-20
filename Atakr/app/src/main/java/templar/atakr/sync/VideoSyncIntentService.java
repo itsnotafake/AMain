@@ -14,7 +14,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import templar.atakr.contentprovider.VideoContract;
+import templar.atakr.databaseobjects.Video;
 import templar.atakr.utility.AddSnapshot;
 
 /**
@@ -49,6 +52,11 @@ public class VideoSyncIntentService extends IntentService{
     private static long mTopStartAt;
     private static int mHotStartAt;
     private static int mNewStartAt;
+
+    //Variables for holding the video data synced from FBDB
+    public static ArrayList<Video> mTopVideoList = new ArrayList<>();
+    public static ArrayList<Video> mHotVideoList = new ArrayList<>();
+    public static ArrayList<Video> mNewVideoList = new ArrayList<>();
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.

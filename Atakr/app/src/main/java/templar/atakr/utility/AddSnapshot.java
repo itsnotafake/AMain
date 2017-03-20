@@ -11,6 +11,7 @@ import com.google.firebase.database.DataSnapshot;
 
 import templar.atakr.contentprovider.VideoContract;
 import templar.atakr.databaseobjects.Video;
+import templar.atakr.sync.VideoSyncIntentService;
 
 /**
  * Created by Devin on 3/17/2017.
@@ -61,7 +62,8 @@ public class AddSnapshot {
                     break;
                 } else {
                     Video video = videoSnapshot.getValue(Video.class);
-                    ContentValues videoCV = new ContentValues();
+                    VideoSyncIntentService.mTopVideoList.add(video);
+                    /*ContentValues videoCV = new ContentValues();
 
                     videoCV.put(VideoContract.VideoEntry.COLUMN_YOUTUBE_VIDEO_ID, video.getYoutubeVideoId());
                     videoCV.put(VideoContract.VideoEntry.COLUMN_YOUTUBE_URL, video.getYoutubeUrl());
@@ -73,17 +75,20 @@ public class AddSnapshot {
                     videoCV.put(VideoContract.VideoEntry.COLUMN_POPULARITY, video.getPopularity());
                     videoCV.put(VideoContract.VideoEntry.COLUMN_TIME_UPLOADED, video.getYoutubeVideoId());
 
-                    videos[counter - 1] = videoCV;
+                    videos[counter - 1] = videoCV;*/
                     counter++;
                 }
             }
-            ContentResolver videoContentResolver = context.getContentResolver();
+            /*ContentResolver videoContentResolver = context.getContentResolver();
             videoContentResolver.bulkInsert(
                     VideoContract.VideoEntry.CONTENT_URI,
                     videos
-            );
+            );*/
         }catch(Exception e){
             Log.e(TAG, "Excpetion: " + e);
+        }
+        for(Video v : VideoSyncIntentService.mTopVideoList){
+            Log.e(TAG, v.toString());
         }
         try{
             return returnSnapshot.getValue(Video.class).getViews();

@@ -4,5 +4,5 @@ Atakr TODO:
 	-make it so that game is attached the video object being stored
 	-create a list of recognized games
 	-give games images
-
 -Right now when we load from the database we return 0 in AddSnapshot.doTopSnapshotToCV() if the number of children is less than 26. We need to figure out a way to incorporate handling this into infinite scrolling. It's a problem to do when infinite scrolling is added. Infinite scrolling TODO link is https://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView
+-Change content provider such that there are three tables with identical columns (one each for hot, top, new). Then depending on the page, a different table is queried for contents of the fragment's adapter.

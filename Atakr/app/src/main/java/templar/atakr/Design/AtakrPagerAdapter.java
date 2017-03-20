@@ -14,7 +14,6 @@ import templar.atakr.framework.VideoBrowseFragment;
 
 public class AtakrPagerAdapter extends FragmentPagerAdapter {
     private static final String TAG = AtakrPagerAdapter.class.getName();
-    private Context mContext;
     private final int PAGE_COUNT = 3;
 
     private String tabTitles[] = new String[] {
@@ -23,9 +22,8 @@ public class AtakrPagerAdapter extends FragmentPagerAdapter {
             "New"
     };
 
-    public AtakrPagerAdapter(FragmentManager fm, Context context){
+    public AtakrPagerAdapter(FragmentManager fm){
         super(fm);
-        mContext = context;
     }
 
     @Override
@@ -35,16 +33,8 @@ public class AtakrPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position){
-        switch (position){
-            case 0:
-                return VideoBrowseFragment.newInstance(position);
-            case 1:
-                return VideoBrowseFragment.newInstance(position);
-            case 2:
-                return VideoBrowseFragment.newInstance(position);
-            default:
-                return null;
-        }
+        Log.e(TAG, "ViewPager's page position is " + position);
+        return VideoBrowseFragment.newInstance(position);
     }
 
     @Override

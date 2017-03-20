@@ -67,7 +67,6 @@ public class ShareActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-        Log.e(TAG, "checkpoint1");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
 
@@ -80,7 +79,6 @@ public class ShareActivity extends AppCompatActivity {
 
         Button shareButton = (Button) findViewById(R.id.share_button);
         mProgressBar = (ProgressBar) findViewById(R.id.share_progress);
-        Log.e(TAG, "checkpoint2");
 
 
         //After the layout is setup, we insure the user is logged in

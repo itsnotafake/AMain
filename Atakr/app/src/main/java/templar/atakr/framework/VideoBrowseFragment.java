@@ -11,6 +11,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +115,7 @@ public class VideoBrowseFragment extends Fragment
             Log.e(TAG, "cursor is null");
             return;
         }
+        Log.e(TAG, "Load finished");
         mVideoAdapter.swapCursor(data);
         if(mPosition == RecyclerView.NO_POSITION)
             mPosition = 0;

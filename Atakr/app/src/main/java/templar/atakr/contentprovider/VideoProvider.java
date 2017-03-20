@@ -71,7 +71,6 @@ public class VideoProvider extends ContentProvider {
                 if(rowsInserted > 0){
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
-                Log.e(TAG, "Bulk Insert completed!");
                 return rowsInserted;
             default:
                 return super.bulkInsert(uri, values);
@@ -151,7 +150,6 @@ public class VideoProvider extends ContentProvider {
         if(numRowsDeleted != 0){
             getContext().getContentResolver().notifyChange(uri, null);
         }
-        Log.e(TAG, numRowsDeleted + " rows deleted");
         return numRowsDeleted;
     }
 
