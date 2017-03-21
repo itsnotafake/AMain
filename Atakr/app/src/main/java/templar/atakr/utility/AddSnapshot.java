@@ -11,6 +11,7 @@ import com.google.firebase.database.DataSnapshot;
 
 import templar.atakr.contentprovider.VideoContract;
 import templar.atakr.databaseobjects.Video;
+import templar.atakr.framework.MainActivity;
 import templar.atakr.sync.VideoSyncIntentService;
 
 /**
@@ -31,68 +32,88 @@ public class AddSnapshot {
      * @param videosToLoad the number of videos we are loading into our content provider. The
      *                     actual number is videosToLoad - 1, because the last video's view value
      *                     is used to determine where to start our next Firebase Database query.
-     * @param context Context necessary for getting a handle on the content resolver needed to
-     *                insert values into the content provider
      * @return we return the views value of the final video, this value then updates mTopStartAt
      * value in VideoSyncIntentService
      */
     //return the view value of the item at the 26th position. This value is used to
     //determine where to start our next Firebase database filter query
-    public static long doTopSnapshotToCV(DataSnapshot dataSnapshot, int videosToLoad, Context context){
+    public static long addToTopVideoList(DataSnapshot dataSnapshot, int videosToLoad) {
         int counter = 1;
-        DataSnapshot returnSnapshot = null;
-        ContentValues[] videos;
-
-        //If this set of videos is a full set of 26 then we input
-        //25 video objects into the content provider. Otherwise the number
-        //of video objects we input is equal to the total number of video objects
-        //in the dataSnapshot (indicating we are near the end of our Firebase Databases
-        //set of videos)
-        if(Iterables.size(dataSnapshot.getChildren()) == 26){
-            videos = new ContentValues[25];
-        }else{
-            videos =
-                    new ContentValues[Iterables.size(dataSnapshot.getChildren())];
-        }
+        Video returnVideo = null;
 
         try {
             for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {
                 if (counter == videosToLoad) {
-                    returnSnapshot = videoSnapshot;
+                    returnVideo = videoSnapshot.getValue(Video.class);
                     break;
                 } else {
                     Video video = videoSnapshot.getValue(Video.class);
-                    VideoSyncIntentService.mTopVideoList.add(video);
-                    /*ContentValues videoCV = new ContentValues();
+                    MainActivity.mTopVideoList.add(video);
 
-                    videoCV.put(VideoContract.VideoEntry.COLUMN_YOUTUBE_VIDEO_ID, video.getYoutubeVideoId());
-                    videoCV.put(VideoContract.VideoEntry.COLUMN_YOUTUBE_URL, video.getYoutubeUrl());
-                    videoCV.put(VideoContract.VideoEntry.COLUMN_YOUTUBE_NAME, video.getYoutubeName());
-                    videoCV.put(VideoContract.VideoEntry.COLUMN_ATAKR_NAME, video.getAtakrName());
-                    videoCV.put(VideoContract.VideoEntry.COLUMN_UPLOADER, video.getUploader());
-                    videoCV.put(VideoContract.VideoEntry.COLUMN_VIEWS, video.getViews());
-                    videoCV.put(VideoContract.VideoEntry.COLUMN_THUMBNAIL_URL, video.getYoutubeThumbailUrl());
-                    videoCV.put(VideoContract.VideoEntry.COLUMN_POPULARITY, video.getPopularity());
-                    videoCV.put(VideoContract.VideoEntry.COLUMN_TIME_UPLOADED, video.getYoutubeVideoId());
-
-                    videos[counter - 1] = videoCV;*/
                     counter++;
                 }
             }
-            /*ContentResolver videoContentResolver = context.getContentResolver();
-            videoContentResolver.bulkInsert(
-                    VideoContract.VideoEntry.CONTENT_URI,
-                    videos
-            );*/
-        }catch(Exception e){
+        } catch (Exception e) {
             Log.e(TAG, "Excpetion: " + e);
         }
-        for(Video v : VideoSyncIntentService.mTopVideoList){
-            Log.e(TAG, v.toString());
+        try {
+            return returnVideo.getViews();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "videoSnapshot length < videosToLoad -> returning 0 from addToTopVideosList");
+            return 0;
         }
-        try{
-            return returnSnapshot.getValue(Video.class).getViews();
-        }catch(NullPointerException e){
+    }
+
+    public static double addToHotVideoList(DataSnapshot dataSnapshot, int videosToLoad) {
+        int counter = 1;
+        Video returnVideo = null;
+
+        try {
+            for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {
+                if (counter == videosToLoad) {
+                    returnVideo = videoSnapshot.getValue(Video.class);
+                    break;
+                } else {
+                    Video video = videoSnapshot.getValue(Video.class);
+                    MainActivity.mHotVideoList.add(video);
+
+                    counter++;
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Excpetion: " + e);
+        }
+        try {
+            return returnVideo.getPopularity();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "videoSnapshot length < videosToLoad -> returning 0 from addToHotVideosList");
+            return 0;
+        }
+    }
+
+    public static long addToNewVideoList(DataSnapshot dataSnapshot, int videosToLoad) {
+        int counter = 1;
+        Video returnVideo = null;
+
+        try {
+            for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {
+                if (counter == videosToLoad) {
+                    returnVideo = videoSnapshot.getValue(Video.class);
+                    break;
+                } else {
+                    Video video = videoSnapshot.getValue(Video.class);
+                    MainActivity.mNewVideoList.add(video);
+
+                    counter++;
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Excpetion: " + e);
+        }
+        try {
+            return returnVideo.getTimeUploaded();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "videoSnapshot length < videosToLoad -> returning 0 from addToNewVideosList");
             return 0;
         }
     }

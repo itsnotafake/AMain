@@ -33,7 +33,6 @@ public class AtakrPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position){
-        Log.e(TAG, "ViewPager's page position is " + position);
         return VideoBrowseFragment.newInstance(position);
     }
 

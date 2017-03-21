@@ -27,6 +27,9 @@
     <string name="share_atakrGame">(optional) Game</string>
     <string name="share_button">Post</string>
 
+    <!--VIDEO BROWSE FRAGMENT -->
+    <string name="video_list_image_CD">Youtube Thumbnail</string>
+
     <!-- CONTENT PROVIDER -->
     <string name="content_authority">templar.atakr</string>
 

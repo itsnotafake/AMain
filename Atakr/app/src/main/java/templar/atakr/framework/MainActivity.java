@@ -27,11 +27,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Observer;
 
 import templar.atakr.R;
 import templar.atakr.databaseobjects.User;
+import templar.atakr.databaseobjects.Video;
 import templar.atakr.design.AtakrPagerAdapter;
 import templar.atakr.sync.VideoSyncIntentService;
 
@@ -62,7 +65,18 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
 
+    //Data variables & Variables for holding the video data
+    // synced from FBDB
     public static String mUsername;
+    public static ArrayList<Video> mTopVideoList = new ArrayList<>();
+    public static ArrayList<Video> mHotVideoList = new ArrayList<>();
+    public static ArrayList<Video> mNewVideoList = new ArrayList<>();
+    public static ArrayList<Video> mGameVideoList = new ArrayList<>();
+
+    //Variables for filtering data from Firebasedatabase
+    public static long mStartTopQueryAt = 0;
+    public static double mStartHotQueryAt = 0;
+    public static long mStartNewQueryAt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -85,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         //Begin syncing content provider with firebase
         initializeVideoSync(
-                VideoSyncIntentService.MAIN_TOP_REQUEST,
-                false
+                VideoSyncIntentService.NO_REQUEST,
+                VideoSyncIntentService.ALL_DELETE
         );
     }
 
@@ -218,38 +232,6 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.setAdapter(new AtakrPagerAdapter(getSupportFragmentManager()));
         mTabLayout = (TabLayout) findViewById(R.id.main_tablayout);
         mTabLayout.setupWithViewPager(mViewPager);
-        //mViewPager.ad
-        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager){
-            @Override
-            public void onTabSelected(TabLayout.Tab tab){
-                Log.e(TAG, "Tab's position is " + tab.getPosition());
-                switch(tab.getPosition()){
-                    case 0:
-                        initializeVideoSync(
-                                VideoSyncIntentService.MAIN_TOP_REQUEST,
-                                false
-                        );
-                        break;
-
-                    case 1:
-                        initializeVideoSync(
-                                VideoSyncIntentService.MAIN_HOT_REQUEST,
-                                false
-                        );
-                        break;
-
-                    case 2:
-                        initializeVideoSync(
-                                VideoSyncIntentService.MAIN_NEW_REQUEST,
-                                false
-                        );
-                        break;
-
-                    default:
-                        throw new IllegalArgumentException("Bad Tab position");
-                }
-            }
-        });
     }
 
     //Creates new User account in User database if new User
@@ -277,11 +259,11 @@ public class MainActivity extends AppCompatActivity {
     Fires off an intent to VideoSyncIntentService, syncing
     video data
     */
-    private void initializeVideoSync(int requestCode, boolean continuation){
+    private void initializeVideoSync(int requestCode, int deleteCode){
         Intent intent = new Intent(mContext, VideoSyncIntentService.class);
         intent.putExtra(VideoSyncIntentService.INTENT_REQUEST, requestCode);
         intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
-        intent.putExtra(VideoSyncIntentService.INTENT_CONTINUATION, continuation);
+        intent.putExtra(VideoSyncIntentService.INTENT_DELETE, deleteCode);
         mContext.startService(intent);
     }
 

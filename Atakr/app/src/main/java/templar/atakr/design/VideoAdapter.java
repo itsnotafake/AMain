@@ -1,32 +1,36 @@
 package templar.atakr.design;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.security.InvalidParameterException;
+
 import templar.atakr.R;
-import templar.atakr.framework.VideoBrowseFragment;
+import templar.atakr.databaseobjects.Video;
+import templar.atakr.framework.MainActivity;
 
 /**
  * Created by Devin on 3/15/2017.
  */
 
-public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapterViewHolder> {
+public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapterViewHolder>{
 
     private static final int VIEW_TYPE_NORMAL = 0;
     private static final int VIEW_TYPE_ENLARGED = 1;
 
     private final Context mContext;
-    private Cursor mCursor;
+    private int mPage;
 
-    public VideoAdapter(@NonNull Context context){
+    public VideoAdapter(@NonNull Context context, int page){
         mContext = context;
+        mPage = page;
     }
 
     @Override
@@ -51,16 +55,35 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
     @Override
     public void onBindViewHolder(VideoAdapterViewHolder videoAdapterViewHolder, int position){
-        mCursor.moveToPosition(position);
-
-        String atakrTitle = mCursor.getString(VideoBrowseFragment.INDEX_ATAKR_NAME);
-        videoAdapterViewHolder.mTitle_TV.setText(atakrTitle);
+        Video video;
+        switch(mPage){
+            case 0:
+                video = MainActivity.mTopVideoList.get(position);
+                break;
+            case 1:
+                video = MainActivity.mHotVideoList.get(position);
+                break;
+            case 2:
+                video = MainActivity.mNewVideoList.get(position);
+                break;
+            default:
+                throw new InvalidParameterException("Not a recognized page number, can't access its video list");
+        }
+        videoAdapterViewHolder.mTitle_TV.setText(video.getYoutubeName());
     }
 
     @Override
     public int getItemCount(){
-        if (null == mCursor) return 0;
-        return mCursor.getCount();
+        switch(mPage){
+            case 0:
+                return MainActivity.mTopVideoList.size();
+            case 1:
+                return MainActivity.mHotVideoList.size();
+            case 2:
+                return MainActivity.mNewVideoList.size();
+            default:
+                throw new IllegalArgumentException("Not a recognized page, can't return item count");
+        }
     }
 
     @Override
@@ -68,13 +91,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         return VIEW_TYPE_NORMAL;
     }
 
-    public void swapCursor(Cursor newCursor){
-        mCursor = newCursor;
-        notifyDataSetChanged();
-    }
-
     class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        RoundedImageView mRoundedImageView;
+        ImageView mImageView;
         FloatingActionButton mFAB;
         TextView mTitle_TV;
 
@@ -83,7 +101,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
             switch(viewType){
                 case VIEW_TYPE_NORMAL:
-                    mRoundedImageView = (RoundedImageView) view.findViewById(R.id.video_list_image);
+                    mImageView = (ImageView) view.findViewById(R.id.video_list_image);
                     mFAB = (FloatingActionButton) view.findViewById(R.id.video_list_play);
                     mTitle_TV = (TextView) view.findViewById(R.id.video_list_title);
                     break;

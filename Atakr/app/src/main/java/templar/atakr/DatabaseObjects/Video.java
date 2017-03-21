@@ -15,7 +15,7 @@ public class Video {
     //private String creator;
     private long views;
     private String youtubeThumbailUrl;
-    private float popularity; // views / (current time - time uploaded) = views per time unit (in ms)
+    private double popularity; // views / (current time - time uploaded) = views per time unit (in ms)
     private long timeUploaded;
 
     public Video(){
@@ -63,9 +63,13 @@ public class Video {
     public String getYoutubeThumbailUrl(){return youtubeThumbailUrl;}
     public void setYoutubeThumbailUrl(String yUrl){youtubeThumbailUrl = yUrl;}
 
-    public float getPopularity(){return popularity;}
+    public double getPopularity(){return popularity;}
     public void setPopularity(Float f){popularity = f;}
 
     public long getTimeUploaded(){return timeUploaded;}
     public void setTimeUploaded(Long l){timeUploaded = l;}
+
+    public String toString(){
+        return youtubeName;
+    }
 }
