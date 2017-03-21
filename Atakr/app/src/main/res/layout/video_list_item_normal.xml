@@ -8,28 +8,17 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimaryDark"
-        android:elevation="4dp">
+        android:background="@color/colorPrimaryDark">
 
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/video_list_image"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
+            android:layout_width="64dp"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:scaleType="centerCrop"
             android:src="@drawable/account_anon_icon"
-            android:contentDescription="@string/video_list_image_CD"
-            android:layout_margin="@dimen/video_list_image_margin"/>
+            android:contentDescription="@string/video_list_image_CD" />
     </FrameLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/video_list_play"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/video_list_fab_margin"
-        android:layout_marginStart="@dimen/video_list_fab_margin"
-        android:layout_marginRight="@dimen/video_list_fab_margin"
-        android:layout_marginEnd="@dimen/video_list_fab_margin"
-        android:layout_gravity="center"/>
 
     <TextView
         android:id="@+id/video_list_title"
@@ -40,5 +29,16 @@
         android:layout_marginLeft="@dimen/video_list_title_margin"
         android:layout_marginStart="@dimen/video_list_title_margin"
         android:textSize="@dimen/video_list_title_normal_textsize"
+        style="@style/list_normal_text"
         tools:text="Video Title"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/video_list_play"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/video_list_fab_margin"
+        android:layout_marginStart="@dimen/video_list_fab_margin"
+        android:layout_marginRight="@dimen/video_list_fab_margin"
+        android:layout_marginEnd="@dimen/video_list_fab_margin"
+        android:layout_gravity="center"/>
 </LinearLayout>

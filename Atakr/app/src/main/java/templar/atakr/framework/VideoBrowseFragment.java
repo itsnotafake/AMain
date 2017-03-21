@@ -42,25 +42,7 @@ public class VideoBrowseFragment extends Fragment{
     private int mPage;
     private RecyclerView mRecyclerView;
     private VideoAdapter mVideoAdapter;
-    public static ArrayList<Video> mVideoList = new ArrayList<>();
     private int mPosition = RecyclerView.NO_POSITION;
-
-    //Variables for dealing with our Video Content Provider
-    private static final int ID_VIDEO_LOADER = 69;
-    public static final String[] MAIN_VIDEO_PROJECTION = {
-            VideoContract.VideoEntry.COLUMN_YOUTUBE_NAME,
-            VideoContract.VideoEntry.COLUMN_ATAKR_NAME,
-            VideoContract.VideoEntry.COLUMN_UPLOADER,
-            VideoContract.VideoEntry.COLUMN_VIEWS,
-            VideoContract.VideoEntry.COLUMN_THUMBNAIL_URL,
-            VideoContract.VideoEntry.COLUMN_YOUTUBE_URL,
-    };
-    public static final int INDEX_YOUTUBE_NAME = 0;
-    public static final int INDEX_ATAKR_NAME = 1;
-    public static final int INDEX_UPLOADER = 2;
-    public static final int INDEX_VIEWS = 3;
-    public static final int INDEX_THUMBNAIL_URL = 4;
-    public static final int INDEX_YOUTUBE_URL = 5;
 
     public static VideoBrowseFragment newInstance(int page){
         Bundle args = new Bundle();
@@ -74,8 +56,11 @@ public class VideoBrowseFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
-        initializeVideoSync();
-        initializeBroadcastReceiver();
+
+        if(savedInstanceState == null){
+            initializeVideoSync();
+            initializeBroadcastReceiver();
+        }
     }
 
     @Override

@@ -92,16 +92,16 @@ public class MainActivity extends AppCompatActivity {
         initializeDrawer();
         //Setup ViewPager and Tabs
         initializeViewPager();
+        //Begin syncing content provider with firebase
+        initializeVideoSync(
+                VideoSyncIntentService.NO_REQUEST,
+                VideoSyncIntentService.NO_DELETE
+        );
     }
 
     @Override
     protected void onStart(){
         super.onStart();
-        //Begin syncing content provider with firebase
-        initializeVideoSync(
-                VideoSyncIntentService.NO_REQUEST,
-                VideoSyncIntentService.ALL_DELETE
-        );
     }
 
     @Override
@@ -256,8 +256,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-    Fires off an intent to VideoSyncIntentService, syncing
-    video data
+    For some reason this sync that does nothing is necessary. Taking it out
+     produces null pointer exceptions. Maybe TODO?? I dunno
     */
     private void initializeVideoSync(int requestCode, int deleteCode){
         Intent intent = new Intent(mContext, VideoSyncIntentService.class);

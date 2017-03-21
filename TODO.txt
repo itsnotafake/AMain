@@ -8,3 +8,4 @@ Atakr TODO:
 -Change content provider such that there are three tables with identical columns (one each for hot, top, new). Then depending on the page, a different table is queried for contents of the fragment's adapter.
 -Change the way hot video syncs work so that only hot videos in the recent week get added.
 -List item thumbnails need to have dynamic Content descriptions (equivalent to their video titles).
+-Fix text style of share activity (in regards to ellipses, copy list_normal_style)

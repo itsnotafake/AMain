@@ -10,11 +10,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.security.InvalidParameterException;
 
 import templar.atakr.R;
 import templar.atakr.databaseobjects.Video;
 import templar.atakr.framework.MainActivity;
+import templar.atakr.utility.ImageLoaderHelper;
 
 /**
  * Created by Devin on 3/15/2017.
@@ -70,6 +73,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
                 throw new InvalidParameterException("Not a recognized page number, can't access its video list");
         }
         videoAdapterViewHolder.mTitle_TV.setText(video.getYoutubeName());
+        videoAdapterViewHolder.mNetworkImageView.setImageUrl(
+                video.getYoutubeThumbailUrl(),
+                ImageLoaderHelper.getInstance(mContext).getImageLoader()
+        );
     }
 
     @Override
@@ -92,7 +99,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     }
 
     class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView mImageView;
+        NetworkImageView mNetworkImageView;
         FloatingActionButton mFAB;
         TextView mTitle_TV;
 
@@ -101,7 +108,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
             switch(viewType){
                 case VIEW_TYPE_NORMAL:
-                    mImageView = (ImageView) view.findViewById(R.id.video_list_image);
+                    mNetworkImageView = (NetworkImageView) view.findViewById(R.id.video_list_image);
                     mFAB = (FloatingActionButton) view.findViewById(R.id.video_list_play);
                     mTitle_TV = (TextView) view.findViewById(R.id.video_list_title);
                     break;
