@@ -29,6 +29,7 @@
 
     <!--VIDEO BROWSE FRAGMENT -->
     <string name="video_list_image_CD">Youtube Thumbnail</string>
+    <string name="fab_CD">Play this Video</string>
 
     <!-- CONTENT PROVIDER -->
     <string name="content_authority">templar.atakr</string>

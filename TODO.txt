@@ -9,3 +9,5 @@ Atakr TODO:
 -Change the way hot video syncs work so that only hot videos in the recent week get added.
 -List item thumbnails need to have dynamic Content descriptions (equivalent to their video titles).
 -Fix text style of share activity (in regards to ellipses, copy list_normal_style)
+-I don't think New is ordered correctly.
+-New videos should not be added to pre-existing lists. Only when refresh is called should this happen.

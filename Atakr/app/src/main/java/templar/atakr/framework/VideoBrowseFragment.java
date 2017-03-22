@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class VideoBrowseFragment extends Fragment{
     private int mPage;
     private RecyclerView mRecyclerView;
     private VideoAdapter mVideoAdapter;
+    private ProgressBar mProgressBar;
     private int mPosition = RecyclerView.NO_POSITION;
 
     public static VideoBrowseFragment newInstance(int page){
@@ -76,6 +78,27 @@ public class VideoBrowseFragment extends Fragment{
         mRecyclerView.setLayoutManager(layoutManager);
         mVideoAdapter = new VideoAdapter(getContext(), mPage);
         mRecyclerView.setAdapter(mVideoAdapter);
+        mProgressBar = (ProgressBar) view.findViewById(R.id.fragment_browse_progress);
+
+        switch(mPage){
+            case 0:
+                if(MainActivity.mTopVideoList.isEmpty()){
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+                break;
+            case 1:
+                if(MainActivity.mHotVideoList.isEmpty()){
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+                break;
+            case 2:
+                if(MainActivity.mNewVideoList.isEmpty()){
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+                break;
+            default:
+                break;
+        }
 
         return view;
     }
@@ -113,6 +136,7 @@ public class VideoBrowseFragment extends Fragment{
             @Override
             public void onReceive(Context context, Intent intent) {
                 Log.e(TAG, "Broadcast received");
+                mProgressBar.setVisibility(View.GONE);
                 mVideoAdapter.notifyDataSetChanged();
             }
         };
