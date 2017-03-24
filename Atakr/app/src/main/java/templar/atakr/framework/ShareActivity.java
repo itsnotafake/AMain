@@ -37,6 +37,7 @@ import java.util.concurrent.FutureTask;
 import templar.atakr.R;
 import templar.atakr.databaseobjects.User;
 import templar.atakr.databaseobjects.Video;
+import templar.atakr.utility.Conversions;
 import templar.atakr.youtube.YoutubeData;
 
 public class ShareActivity extends AppCompatActivity {
@@ -171,6 +172,7 @@ public class ShareActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(!dataSnapshot.hasChild(mYoutubeId)) {
                     mAtakrTitle = mAtakrTitleEditText.getText().toString();
+
                     Video video = new Video(
                             mYoutubeId,
                             mYoutubeUrl,
@@ -178,7 +180,7 @@ public class ShareActivity extends AppCompatActivity {
                             mAtakrTitle,
                             mFirebaseAuth.getCurrentUser().getUid(),
                             mYoutubeThumbnailUrl,
-                            String.valueOf(1)
+                            String.valueOf(-1)
                     );
                     mVideoDatabaseReference.child(mYoutubeId).setValue(video);
                     Toast.makeText(

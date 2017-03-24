@@ -10,11 +10,13 @@
     <dimen name="mainfrag_top_margin">?actionBarSize</dimen>
 
     <!-- VIDEO LIST DIMENS -->
+    <integer name="main_list_columns">1</integer>
     <dimen name="video_list_image_margin">8dp</dimen>
     <dimen name="video_list_fab_margin">4dp</dimen>
     <dimen name="video_list_title_margin">8dp</dimen>
     <dimen name="video_list_title_vertical_margin">10dp</dimen>
     <dimen name="video_list_title_normal_textsize">18sp</dimen>
+    <dimen name="list_text_horizontal_margin">8dp</dimen>
     <dimen name="list_enlarged_text_vertical_margin">2dp</dimen>
     <dimen name="list_enlarged_text_horizontal_margin">8dp</dimen>
     <dimen name="card_corner_radius">0dp</dimen>

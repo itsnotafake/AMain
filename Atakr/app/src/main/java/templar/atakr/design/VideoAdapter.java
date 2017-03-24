@@ -38,19 +38,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
     @Override
     public VideoAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType){
-        int layoutId;
-
-        switch(viewType) {
-            case VIEW_TYPE_NORMAL:
-                layoutId = R.layout.video_list_item_normal;
-                break;
-            case VIEW_TYPE_ENLARGED:
-                layoutId = R.layout.video_list_item_enlarged;
-                break;
-            default:
-                throw new IllegalArgumentException("Invalid view type, value of " + viewType);
-        }
-
+        int layoutId = R.layout.video_list_item;
         View view = LayoutInflater.from(mContext).inflate(layoutId, viewGroup, false);
         view.setFocusable(true);
         return new VideoAdapterViewHolder(view, viewType);
@@ -58,6 +46,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
     @Override
     public void onBindViewHolder(VideoAdapterViewHolder videoAdapterViewHolder, int position){
+        //final boolean isExpanded = position==mExpandedPosition;
+
         Video video;
         switch(mPage){
             case 0:
@@ -100,7 +90,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
     class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         NetworkImageView mNetworkImageView;
-        FloatingActionButton mFAB;
         TextView mTitle_TV;
 
         VideoAdapterViewHolder(View view, int viewType) {
@@ -109,7 +98,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             switch(viewType){
                 case VIEW_TYPE_NORMAL:
                     mNetworkImageView = (NetworkImageView) view.findViewById(R.id.video_list_image);
-                    mFAB = (FloatingActionButton) view.findViewById(R.id.video_list_play);
                     mTitle_TV = (TextView) view.findViewById(R.id.video_list_title);
                     break;
 

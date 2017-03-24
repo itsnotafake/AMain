@@ -12,6 +12,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -60,7 +61,7 @@ public class VideoBrowseFragment extends Fragment{
         mPage = getArguments().getInt(ARG_PAGE);
 
         if(savedInstanceState == null){
-            initializeVideoSync();
+            //initializeVideoSync();
             initializeBroadcastReceiver();
         }
     }
@@ -75,9 +76,12 @@ public class VideoBrowseFragment extends Fragment{
         mRecyclerView = (RecyclerView) view.findViewById(R.id.main_recyclerview);
         LinearLayoutManager layoutManager =
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
+        final int columns = getResources().getInteger(R.integer.main_list_columns);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), columns));
         mVideoAdapter = new VideoAdapter(getContext(), mPage);
         mRecyclerView.setAdapter(mVideoAdapter);
+
+        //Assign progress bar
         mProgressBar = (ProgressBar) view.findViewById(R.id.fragment_browse_progress);
 
         switch(mPage){
@@ -99,7 +103,6 @@ public class VideoBrowseFragment extends Fragment{
             default:
                 break;
         }
-
         return view;
     }
 

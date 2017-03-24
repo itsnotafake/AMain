@@ -3,10 +3,14 @@
     <color name="colorPrimaryLight">#FFE0B2</color>
     <color name="colorPrimaryLightTransparent">#BFFFE0B2</color>
     <color name="colorPrimary">#FF9800</color>
+    <color name="colorPrimaryTransparent">#66FF9800</color>
     <color name="colorPrimaryDark">#F57C00</color>
     <color name="colorAccent">#00E676</color>
     <color name="colorAccentTransparent">#BF00E676</color>
 
     <color name="recycler_background">#FFE0B2</color>
     <color name="list_cardView_background">#EEEEEE</color>
+    <color name="list_text_color">#FFFFFF</color>
+    <color name="list_text_shadow">#000000</color>
+    <color name="list_item_title_background">#66424242</color>
 </resources>

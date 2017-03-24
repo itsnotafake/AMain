@@ -9,6 +9,10 @@ import android.util.Log;
 import com.google.common.collect.Iterables;
 import com.google.firebase.database.DataSnapshot;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
+
 import templar.atakr.contentprovider.VideoContract;
 import templar.atakr.databaseobjects.Video;
 import templar.atakr.framework.MainActivity;
@@ -41,7 +45,7 @@ public class AddSnapshot {
         int counter = 1;
         Video returnVideo = null;
 
-        try {
+        try{
             for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {
                 if (counter == videosToLoad) {
                     returnVideo = videoSnapshot.getValue(Video.class);
@@ -49,11 +53,10 @@ public class AddSnapshot {
                 } else {
                     Video video = videoSnapshot.getValue(Video.class);
                     MainActivity.mTopVideoList.add(video);
-
                     counter++;
                 }
             }
-        } catch (Exception e) {
+        }catch(Exception e){
             Log.e(TAG, "Excpetion: " + e);
         }
         try {
@@ -103,7 +106,6 @@ public class AddSnapshot {
                 } else {
                     Video video = videoSnapshot.getValue(Video.class);
                     MainActivity.mNewVideoList.add(video);
-
                     counter++;
                 }
             }

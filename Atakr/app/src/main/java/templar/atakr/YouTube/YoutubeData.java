@@ -63,14 +63,20 @@ import java.util.List;
             VideoStatistics vSt = video.getStatistics();
             String title = vSn.getTitle();
             ThumbnailDetails thumbnails = vSn.getThumbnails();
-            Thumbnail thumbnail = thumbnails.getDefault();
+            Thumbnail thumbnail;
+            try {
+                thumbnail = thumbnails.getStandard();
+                bundle.putString(VIDEO_THUMBNAIL, thumbnail.getUrl());
+            }catch (NullPointerException e){
+                thumbnail = thumbnails.getHigh();
+                bundle.putString(VIDEO_THUMBNAIL, thumbnail.getUrl());
+            }
             String uploader = vSn.getChannelTitle();
             String views = vSt.getViewCount().toString();
 
             bundle.putString(VIDEO_TITLE, title);
             bundle.putString(VIDEO_UPLOADER, uploader);
             bundle.putString(VIDEO_VIEWS, views);
-            bundle.putString(VIDEO_THUMBNAIL, thumbnail.getUrl());
         }catch(IOException e){
             Log.e(TAG, "Error " + e);
         }

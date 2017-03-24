@@ -1,5 +1,7 @@
 package templar.atakr.databaseobjects;
 
+import templar.atakr.utility.Conversions;
+
 /**
  * Created by Devin on 3/9/2017.
  */
@@ -29,7 +31,7 @@ public class Video {
         uploader = uploadedBy;
         youtubeThumbailUrl = yUrl;
         views = Long.valueOf(v);
-        timeUploaded = System.currentTimeMillis();
+        timeUploaded = Conversions.getNegTimeUploaded(System.currentTimeMillis());
         calculatePopularity();
     }
 

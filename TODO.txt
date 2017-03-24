@@ -11,3 +11,4 @@ Atakr TODO:
 -Fix text style of share activity (in regards to ellipses, copy list_normal_style)
 -I don't think New is ordered correctly.
 -New videos should not be added to pre-existing lists. Only when refresh is called should this happen.
+-in landscape mode display 2 videos side by side instead of 1 row of one.

@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
         initializeViewPager();
         //Begin syncing content provider with firebase
         initializeVideoSync(
-                VideoSyncIntentService.NO_REQUEST,
-                VideoSyncIntentService.NO_DELETE
+                VideoSyncIntentService.ALL_REQUEST_MG,
+                VideoSyncIntentService.ALL_DELETE
         );
     }
 
