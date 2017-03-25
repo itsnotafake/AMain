@@ -25,6 +25,9 @@
     <dimen name="design_fab_size_normal" tools:override="true">74dp</dimen>
     <dimen name="fab_translation_z">6dp</dimen>
 
+    <!-- VIDEO PLAY DIMENS-->
+    <dimen name="videoplay_frame_margin">0dp</dimen>
+
     <!-- SHARE ACTIVITY DIMENS -->
     <dimen name="share_username_padding">6dp</dimen>
     <dimen name="share_username_textSize">16sp</dimen>

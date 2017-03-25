@@ -39,6 +39,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".framework.VideoPlayActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+
         <provider
             android:authorities="@string/content_authority"
             android:name=".contentprovider.VideoProvider"
