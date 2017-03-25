@@ -41,7 +41,7 @@
 
         <activity
             android:name=".framework.VideoPlayActivity"
-            android:theme="@android:style/Theme.Dialog">
+            android:theme="@style/VideoPlayDialog">
         </activity>
 
         <provider

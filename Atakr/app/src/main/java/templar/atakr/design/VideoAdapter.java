@@ -1,11 +1,13 @@
 package templar.atakr.design;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.google.android.youtube.player.YouTubeThumbnailLoader;
 import com.google.android.youtube.player.YouTubeThumbnailView;
 
@@ -33,15 +36,10 @@ import templar.atakr.youtube.Config;
  */
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapterViewHolder>{
-
+    private static final String TAG = VideoAdapter.class.getName();
     private static final int VIEW_TYPE_NORMAL = 0;
-    private final int UNITIALIZED = 10;
-    private final int INITIALIZING = 20;
-    private final int INITIALIZED = 30;
-
     private final Context mContext;
     private int mPage;
-    private Video mVideo;
 
     public VideoAdapter(@NonNull Context context, int page){
         mContext = context;
@@ -58,32 +56,19 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
     @Override
     public void onBindViewHolder(VideoAdapterViewHolder videoAdapterViewHolder, int position){
-        //final boolean isExpanded = position==mExpandedPosition;
-
         switch(mPage){
             case 0:
-                mVideo = MainActivity.mTopVideoList.get(position);
+                videoAdapterViewHolder.setVideo(MainActivity.mTopVideoList.get(position));
                 break;
             case 1:
-                mVideo = MainActivity.mHotVideoList.get(position);
+                videoAdapterViewHolder.setVideo(MainActivity.mHotVideoList.get(position));
                 break;
             case 2:
-                mVideo = MainActivity.mNewVideoList.get(position);
+                videoAdapterViewHolder.setVideo(MainActivity.mNewVideoList.get(position));
                 break;
             default:
                 throw new InvalidParameterException("Not a recognized page number, " +
                         "can't access its video list");
-        }
-        videoAdapterViewHolder.mTitle_TV.setText(mVideo.getYoutubeName());
-        videoAdapterViewHolder.mYouTubeThumbnailView.setTag(R.id.videoid, mVideo.getYoutubeVideoId());
-
-        int state = (int) videoAdapterViewHolder.mYouTubeThumbnailView.getTag(R.id.initialize);
-        if(state == UNITIALIZED){
-            videoAdapterViewHolder.initialize();
-        }else if(state == INITIALIZED){
-            YouTubeThumbnailLoader loader = (YouTubeThumbnailLoader)
-                    videoAdapterViewHolder.mYouTubeThumbnailView.getTag(R.id.thumbnailloader);
-            loader.setVideo(mVideo.getYoutubeVideoId());
         }
     }
 
@@ -107,51 +92,25 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     }
 
     class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        YouTubeThumbnailView mYouTubeThumbnailView;
+        Video mVideo;
+        NetworkImageView mNetworkImageView;
         TextView mTitle_TV;
 
         VideoAdapterViewHolder(View view, int viewType) {
             super(view);
-            mYouTubeThumbnailView = (YouTubeThumbnailView) view.findViewById(R.id.video_list_image);
             mTitle_TV = (TextView) view.findViewById(R.id.video_list_title);
+            mNetworkImageView = (NetworkImageView) view.findViewById(R.id.video_list_image);
 
-            initialize();
             view.setOnClickListener(this);
         }
 
-        private void initialize(){
-            mYouTubeThumbnailView.setTag(R.id.initialize, INITIALIZING);
-            mYouTubeThumbnailView.setTag(R.id.thumbnailloader, null);
-            mYouTubeThumbnailView.setTag(R.id.videoid, "");
-
-            mYouTubeThumbnailView.initialize(Config.YOUTUBE_API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
-                @Override
-                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
-                    mYouTubeThumbnailView.setTag(R.id.initialize, INITIALIZED);
-                    mYouTubeThumbnailView.setTag(R.id.thumbnailloader, youTubeThumbnailLoader);
-
-                    youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
-                        @Override
-                        public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-                            youTubeThumbnailLoader.release();
-                        }
-
-                        @Override
-                        public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-
-                        }
-                    });
-                    String videoId = (String) mYouTubeThumbnailView.getTag(R.id.videoid);
-                    if(videoId != null && !videoId.isEmpty()){
-                        youTubeThumbnailLoader.setVideo(videoId);
-                    }
-                }
-
-                @Override
-                public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
-                    mYouTubeThumbnailView.setTag(R.id.initialize, UNITIALIZED);
-                }
-            });
+        public void setVideo(Video video){
+            mVideo = video;
+            mTitle_TV.setText(mVideo.getYoutubeName());
+            mNetworkImageView.setImageUrl(
+                    mVideo.getYoutubeThumbailUrl(),
+                    ImageLoaderHelper.getInstance(mContext).getImageLoader()
+            );
         }
 
         @Override
@@ -159,6 +118,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             Intent intent = new Intent(mContext, VideoPlayActivity.class);
             intent.putExtra(VideoPlayActivity.YOUTUBE_VIDEO_ID, mVideo.getYoutubeVideoId());
             mContext.startActivity(intent);
+            /*Intent intent = YouTubeStandalonePlayer.createVideoIntent(mActivity, Config.YOUTUBE_API_KEY, mVideo.getYoutubeVideoId());
+            mContext.startActivity(intent);*/
         }
     }
 }

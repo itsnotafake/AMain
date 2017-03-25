@@ -93,15 +93,7 @@ public class MainActivity extends AppCompatActivity {
         //Setup ViewPager and Tabs
         initializeViewPager();
         //Begin syncing content provider with firebase
-        initializeVideoSync(
-                VideoSyncIntentService.ALL_REQUEST_MG,
-                VideoSyncIntentService.ALL_DELETE
-        );
-    }
-
-    @Override
-    protected void onStart(){
-        super.onStart();
+        doSync();
     }
 
     @Override
@@ -255,16 +247,48 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void doSync(){
+        if(mTopVideoList.isEmpty() && mHotVideoList.isEmpty() && mNewVideoList.isEmpty()){
+            initializeVideoSync(
+                    VideoSyncIntentService.ALL_REQUEST_MG,
+                    VideoSyncIntentService.NO_DELETE,
+                    null
+            );
+        }else if(mTopVideoList.isEmpty()){
+            initializeVideoSync(
+                    VideoSyncIntentService.TOP_REQUEST,
+                    VideoSyncIntentService.NO_DELETE,
+                    null
+            );
+        }else if(mHotVideoList.isEmpty()){
+            initializeVideoSync(
+                    VideoSyncIntentService.HOT_REQUEST,
+                    VideoSyncIntentService.NO_DELETE,
+                    null
+            );
+        }else if(mNewVideoList.isEmpty()){
+            initializeVideoSync(
+                    VideoSyncIntentService.NEW_REQUEST,
+                    VideoSyncIntentService.NO_DELETE,
+                    null
+            );
+        }
+    }
+
     /**
     For some reason this sync that does nothing is necessary. Taking it out
      produces null pointer exceptions. Maybe TODO?? I dunno
     */
-    private void initializeVideoSync(int requestCode, int deleteCode){
-        Intent intent = new Intent(mContext, VideoSyncIntentService.class);
+    public void initializeVideoSync(int requestCode, int deleteCode, String title){
+        Intent intent = new Intent(this, VideoSyncIntentService.class);
         intent.putExtra(VideoSyncIntentService.INTENT_REQUEST, requestCode);
-        intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
         intent.putExtra(VideoSyncIntentService.INTENT_DELETE, deleteCode);
-        mContext.startService(intent);
+        if(title == null || title.isEmpty()){
+            intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
+        }else{
+            intent.putExtra(VideoSyncIntentService.INTENT_TITLE, title);
+        }
+        startService(intent);
     }
 
 }

@@ -61,9 +61,9 @@ public class VideoBrowseFragment extends Fragment{
         mPage = getArguments().getInt(ARG_PAGE);
 
         if(savedInstanceState == null){
-            //initializeVideoSync();
             initializeBroadcastReceiver();
         }
+        mVideoAdapter = new VideoAdapter(getContext(), mPage);
     }
 
     @Override
@@ -78,7 +78,6 @@ public class VideoBrowseFragment extends Fragment{
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         final int columns = getResources().getInteger(R.integer.main_list_columns);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), columns));
-        mVideoAdapter = new VideoAdapter(getContext(), mPage);
         mRecyclerView.setAdapter(mVideoAdapter);
 
         //Assign progress bar
@@ -104,34 +103,6 @@ public class VideoBrowseFragment extends Fragment{
                 break;
         }
         return view;
-    }
-
-    public void initializeVideoSync(){
-        Intent intent = new Intent(getContext(), VideoSyncIntentService.class);
-        intent.putExtra(VideoSyncIntentService.INTENT_DELETE,
-                VideoSyncIntentService.NO_DELETE);
-        intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
-        Log.e(TAG, "initializing Video Sync at page " + mPage);
-
-        switch(mPage){
-            case 0:
-                intent.putExtra(VideoSyncIntentService.INTENT_REQUEST,
-                        VideoSyncIntentService.TOP_REQUEST);
-                break;
-            case 1:
-                intent.putExtra(VideoSyncIntentService.INTENT_REQUEST,
-                        VideoSyncIntentService.HOT_REQUEST);
-                break;
-            case 2:
-                intent.putExtra(VideoSyncIntentService.INTENT_REQUEST,
-                        VideoSyncIntentService.NEW_REQUEST);
-                break;
-            default:
-                intent.putExtra(VideoSyncIntentService.INTENT_REQUEST,
-                        VideoSyncIntentService.NO_REQUEST);
-                break;
-        }
-        getContext().startService(intent);
     }
 
     public void initializeBroadcastReceiver(){
