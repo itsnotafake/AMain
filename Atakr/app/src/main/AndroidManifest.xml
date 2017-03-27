@@ -44,11 +44,6 @@
             android:theme="@style/VideoPlayDialog">
         </activity>
 
-        <provider
-            android:authorities="@string/content_authority"
-            android:name=".contentprovider.VideoProvider"
-            android:exported="false"/>
-
         <service
             android:name=".sync.VideoSyncIntentService"/>
     </application>

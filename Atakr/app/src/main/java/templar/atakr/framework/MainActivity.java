@@ -29,8 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Observer;
 
 import templar.atakr.R;
 import templar.atakr.databaseobjects.User;
@@ -55,7 +53,18 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mUserDatabaseReference;
-    public DatabaseReference mVideoDatabaseReference;
+    private DatabaseReference mVideoDatabaseReference;
+
+    /**
+    VideoSyncIntentService uses this instance of database reference so that
+    we have a consistent image of the database. (I believe that) doing so means
+     that we won't see duplicates of a video if, for example, the view count changes
+     on the videos and then new videos are loaded in when scrolling. This database
+     reference is reinitialized when a refresh is called.
+     */
+    public static DatabaseReference mTopVideoDatabaseReference;
+    public static DatabaseReference mHotVideoDatabaseReference;
+    public static DatabaseReference mNewVideoDatabaseReference;
 
     //Layout related variables
     private DrawerLayout mDrawerLayout;
@@ -147,6 +156,8 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == RC_SIGN_IN){
             if(resultCode == RESULT_CANCELED){
                 finish();
+            }else if(resultCode == RESULT_OK){
+                doSync();
             }
         }
     }
@@ -283,6 +294,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, VideoSyncIntentService.class);
         intent.putExtra(VideoSyncIntentService.INTENT_REQUEST, requestCode);
         intent.putExtra(VideoSyncIntentService.INTENT_DELETE, deleteCode);
+        intent.putExtra(VideoSyncIntentService.INTENT_INIT_DB, true);
         if(title == null || title.isEmpty()){
             intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
         }else{

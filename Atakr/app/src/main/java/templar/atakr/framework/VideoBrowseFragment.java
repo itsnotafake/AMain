@@ -8,26 +8,19 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import java.security.InvalidParameterException;
-import java.util.ArrayList;
-
 import templar.atakr.R;
-import templar.atakr.contentprovider.VideoContract;
 import templar.atakr.databaseobjects.Video;
+import templar.atakr.design.EndlessRecyclerViewScrollListener;
 import templar.atakr.design.VideoAdapter;
 import templar.atakr.sync.VideoSyncIntentService;
 
@@ -42,8 +35,10 @@ public class VideoBrowseFragment extends Fragment{
 
     //Layout related variables
     private int mPage;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private VideoAdapter mVideoAdapter;
+    private EndlessRecyclerViewScrollListener mScrollListener;
     private ProgressBar mProgressBar;
     private int mPosition = RecyclerView.NO_POSITION;
 
@@ -72,17 +67,83 @@ public class VideoBrowseFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_videobrowse, container, false);
 
         //Set up recycler view
-        //initializeRecyclerView();
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.main_recyclerview);
-        LinearLayoutManager layoutManager =
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        final int columns = getResources().getInteger(R.integer.main_list_columns);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), columns));
-        mRecyclerView.setAdapter(mVideoAdapter);
-
+        initializeRecyclerView(view);
         //Assign progress bar
-        mProgressBar = (ProgressBar) view.findViewById(R.id.fragment_browse_progress);
+        initializeProgressBar(view);
+        //Initialize Swipe Refresh
+        initializeSwipeRefresh(view);
+        return view;
+    }
 
+    public void initializeBroadcastReceiver(){
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Log.e(TAG, "Broadcast received");
+                mProgressBar.setVisibility(View.GONE);
+                mVideoAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        };
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(
+                receiver, new IntentFilter(VIDEO_DATA_BROADCAST + mPage));
+    }
+
+    public void initializeRecyclerView(View view){
+        final int columns = getResources().getInteger(R.integer.main_list_columns);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), columns);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.main_recyclerview);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mVideoAdapter);
+        mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                boolean loadMore = true;
+                Intent intent = new Intent(getContext(), VideoSyncIntentService.class);
+                intent.putExtra(
+                        VideoSyncIntentService.INTENT_DELETE,
+                        VideoSyncIntentService.NO_DELETE);
+                intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
+                intent.putExtra(VideoSyncIntentService.INTENT_INIT_DB, false);
+                switch(mPage){
+                    case 0:
+                        if(MainActivity.mStartTopQueryAt == 1){
+                            loadMore = false;
+                        }
+                        intent.putExtra(
+                                VideoSyncIntentService.INTENT_REQUEST,
+                                VideoSyncIntentService.TOP_REQUEST);
+                        break;
+                    case 1:
+                        if(MainActivity.mStartHotQueryAt == -1){
+                            loadMore = false;
+                        }
+                        intent.putExtra(
+                                VideoSyncIntentService.INTENT_REQUEST,
+                                VideoSyncIntentService.HOT_REQUEST);
+                        break;
+                    case 2:
+                        if(MainActivity.mStartNewQueryAt == -1){
+                            loadMore = false;
+                        }
+                        intent.putExtra(
+                                VideoSyncIntentService.INTENT_REQUEST,
+                                VideoSyncIntentService.NEW_REQUEST);
+                        break;
+                    default:
+                        throw new IllegalArgumentException
+                                ("Illegal argument for onLoadMore, bad Page: " + mPage);
+                }
+                if(loadMore) {
+                    getContext().startService(intent);
+                }
+            }
+        };
+        mRecyclerView.addOnScrollListener(mScrollListener);
+    }
+
+    public void initializeProgressBar(View view){
+        mProgressBar = (ProgressBar) view.findViewById(R.id.fragment_browse_progress);
         switch(mPage){
             case 0:
                 if(MainActivity.mTopVideoList.isEmpty()){
@@ -102,19 +163,47 @@ public class VideoBrowseFragment extends Fragment{
             default:
                 break;
         }
-        return view;
     }
 
-    public void initializeBroadcastReceiver(){
-        BroadcastReceiver receiver = new BroadcastReceiver() {
+    public void initializeSwipeRefresh(View view){
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.fragment_browse_refresh);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                Log.e(TAG, "Broadcast received");
-                mProgressBar.setVisibility(View.GONE);
-                mVideoAdapter.notifyDataSetChanged();
+            public void onRefresh() {
+                Intent intent = new Intent(getContext(), VideoSyncIntentService.class);
+                intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
+                intent.putExtra(VideoSyncIntentService.INTENT_INIT_DB, true);
+                switch(mPage){
+                    case 0:
+                        intent.putExtra(
+                                VideoSyncIntentService.INTENT_REQUEST,
+                                VideoSyncIntentService.TOP_REQUEST);
+                        intent.putExtra(
+                                VideoSyncIntentService.INTENT_DELETE,
+                                VideoSyncIntentService.TOP_DELETE);
+                        break;
+                    case 1:
+                        intent.putExtra(
+                                VideoSyncIntentService.INTENT_REQUEST,
+                                VideoSyncIntentService.HOT_REQUEST);
+                        intent.putExtra(
+                                VideoSyncIntentService.INTENT_DELETE,
+                                VideoSyncIntentService.HOT_DELETE);
+                        break;
+                    case 2:
+                        intent.putExtra(
+                                VideoSyncIntentService.INTENT_REQUEST,
+                                VideoSyncIntentService.NEW_REQUEST);
+                        intent.putExtra(
+                                VideoSyncIntentService.INTENT_DELETE,
+                                VideoSyncIntentService.NEW_DELETE);
+                        break;
+                    default:
+                        throw new IllegalArgumentException(
+                                "Cannot refresh page, bad page number: " + mPage);
+                }
+                getActivity().startService(intent);
             }
-        };
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(
-                receiver, new IntentFilter(VIDEO_DATA_BROADCAST + mPage));
+        });
     }
 }

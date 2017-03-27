@@ -1,23 +1,16 @@
 package templar.atakr.sync;
 
 import android.app.IntentService;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
-import templar.atakr.contentprovider.VideoContract;
-import templar.atakr.databaseobjects.Video;
 import templar.atakr.framework.MainActivity;
 import templar.atakr.framework.VideoBrowseFragment;
 import templar.atakr.utility.AddSnapshot;
@@ -28,7 +21,10 @@ import templar.atakr.utility.AddSnapshot;
 
 public class VideoSyncIntentService extends IntentService {
     private static final String VIDEO_SYNC_TAG = "atakr-video-sync";
-    private static final int VIDEOS_TO_LOAD = 26;
+    private static final int VIDEOS_TO_LOAD = 15;
+    //different value so we avoid videos not being shown if they have
+    //equivalent views value as video at the end of last bucket
+    private static final int TOP_VIDEOS_TO_LOAD = VIDEOS_TO_LOAD * 4;
 
     /**
      * variables stored in the intent. intent_continuation is a boolean
@@ -39,6 +35,7 @@ public class VideoSyncIntentService extends IntentService {
     public static final String INTENT_REQUEST = "bundle_request";
     public static final String INTENT_TITLE = "bundle_title";
     public static final String INTENT_DELETE = "intent_delete";
+    public static final String INTENT_INIT_DB = "intent_init_db";
 
     //constants used to determine what type of request to make to the
     //firebase database
@@ -57,7 +54,6 @@ public class VideoSyncIntentService extends IntentService {
     public static final int ALL_DELETE = 4100;
 
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mVideoDatabaseReference;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -77,12 +73,15 @@ public class VideoSyncIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         int requestCode;
         int deleteCode;
-        initializeDatabase();
 
         try {
             requestCode = intent.getIntExtra(INTENT_REQUEST, 0);
             deleteCode = intent.getIntExtra(INTENT_DELETE, 0);
             String gameTitle = intent.getStringExtra(INTENT_TITLE);
+            boolean initDB = intent.getBooleanExtra(INTENT_INIT_DB, false);
+            if(initDB){
+                initializeDatabase(requestCode);
+            }
 
             deleteContents(deleteCode);
 
@@ -125,24 +124,27 @@ public class VideoSyncIntentService extends IntentService {
         //.startAt as part of the query builder, otherwise, if everything has been deleted,
         // we simply start at the beginnning of the Firebase database
         if (MainActivity.mStartTopQueryAt != 0) {
-            //This query should order videos descending by views,
-            // starting at the 26th video from the previous query limited to 26 videos
-            sortedVideoQuery = mVideoDatabaseReference
+            /*
+            This query should order videos descending by views,
+            starting at the VIDEOS_TO_LOAD video from the previous query limited to VIDEOS_TO_LOAD
+             */
+            sortedVideoQuery = MainActivity.mTopVideoDatabaseReference
                     .orderByChild("views")
-                    .startAt(MainActivity.mStartTopQueryAt, "views")
-                    .limitToFirst(VIDEOS_TO_LOAD);
+                    .startAt(MainActivity.mStartTopQueryAt, "youtubeVideoId")
+                    .limitToFirst(TOP_VIDEOS_TO_LOAD);
         } else {
-            //This query orders videos descendingly by views, starting at the beginning, limited to 26.
-            sortedVideoQuery = mVideoDatabaseReference
+            //This query orders videos descendingly by views, starting at the beginning,
+            //limited to VIDEOS_TO_LOAD
+            sortedVideoQuery = MainActivity.mTopVideoDatabaseReference
                     .orderByChild("views")
-                    .limitToFirst(VIDEOS_TO_LOAD);
+                    .limitToFirst(TOP_VIDEOS_TO_LOAD);
         }
         sortedVideoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 MainActivity.mStartTopQueryAt = AddSnapshot.addToTopVideoList(
                         dataSnapshot,
-                        VIDEOS_TO_LOAD
+                        TOP_VIDEOS_TO_LOAD
                 );
                 Intent intent = new Intent(VideoBrowseFragment.VIDEO_DATA_BROADCAST + 0);
                 Log.e(VIDEO_SYNC_TAG, "Sending top broadcast");
@@ -164,13 +166,13 @@ public class VideoSyncIntentService extends IntentService {
         if (MainActivity.mStartHotQueryAt != 0) {
             //This query should order videos descending by views,
             // starting at the 26th video from the previous query limited to 26 videos
-            sortedVideoQuery = mVideoDatabaseReference
+            sortedVideoQuery = MainActivity.mHotVideoDatabaseReference
                     .orderByChild("popularity")
                     .startAt(MainActivity.mStartHotQueryAt, "popularity")
                     .limitToFirst(VIDEOS_TO_LOAD);
         } else {
             //This query orders videos descendingly by views, starting at the beginning, limited to 26.
-            sortedVideoQuery = mVideoDatabaseReference
+            sortedVideoQuery = MainActivity.mHotVideoDatabaseReference
                     .orderByChild("popularity")
                     .limitToFirst(VIDEOS_TO_LOAD);
         }
@@ -201,13 +203,13 @@ public class VideoSyncIntentService extends IntentService {
         if (MainActivity.mStartNewQueryAt != 0) {
             //This query should order videos descending by views,
             // starting at the 26th video from the previous query limited to 26 videos
-            sortedVideoQuery = mVideoDatabaseReference
+            sortedVideoQuery = MainActivity.mNewVideoDatabaseReference
                     .orderByChild("timeUploaded")
                     .startAt(MainActivity.mStartNewQueryAt, "timeUploaded")
                     .limitToFirst(VIDEOS_TO_LOAD);
         } else {
             //This query orders videos descendingly by views, starting at the beginning, limited to 26.
-            sortedVideoQuery = mVideoDatabaseReference
+            sortedVideoQuery = MainActivity.mNewVideoDatabaseReference
                     .orderByChild("timeUploaded")
                     .limitToFirst(VIDEOS_TO_LOAD);
         }
@@ -233,9 +235,32 @@ public class VideoSyncIntentService extends IntentService {
 
     }
 
-    public void initializeDatabase() {
+    public void initializeDatabase(int requestCode) {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mVideoDatabaseReference = mFirebaseDatabase.getReference().child("Videos");
+        switch(requestCode){
+            case TOP_REQUEST:
+                MainActivity.mTopVideoDatabaseReference =
+                        mFirebaseDatabase.getReference().child("Videos");
+                return;
+            case HOT_REQUEST:
+                MainActivity.mHotVideoDatabaseReference =
+                        mFirebaseDatabase.getReference().child("Videos");
+                return;
+            case NEW_REQUEST:
+                MainActivity.mNewVideoDatabaseReference =
+                        mFirebaseDatabase.getReference().child("Videos");
+                return;
+            case GAME_REQUEST:
+                break;
+            case ALL_REQUEST_MG:
+                initializeDatabase(TOP_REQUEST);
+                initializeDatabase(HOT_REQUEST);
+                initializeDatabase(NEW_REQUEST);
+                return;
+            default:
+                throw new IllegalArgumentException(
+                        "Cannot initialize Database, invalid requestCode: " + requestCode);
+        }
     }
 
     private void deleteContents(int deleteCode) {

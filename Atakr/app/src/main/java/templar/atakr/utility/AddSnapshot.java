@@ -1,22 +1,11 @@
 package templar.atakr.utility;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.google.common.collect.Iterables;
 import com.google.firebase.database.DataSnapshot;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import templar.atakr.contentprovider.VideoContract;
 import templar.atakr.databaseobjects.Video;
 import templar.atakr.framework.MainActivity;
-import templar.atakr.sync.VideoSyncIntentService;
 
 /**
  * Created by Devin on 3/17/2017.
@@ -48,7 +37,8 @@ public class AddSnapshot {
         try{
             for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {
                 if (counter == videosToLoad) {
-                    returnVideo = videoSnapshot.getValue(Video.class);
+                    returnVideo = videoSnapshot.getValue(Video.class);;
+                    MainActivity.mTopVideoList.add(returnVideo);
                     break;
                 } else {
                     Video video = videoSnapshot.getValue(Video.class);
@@ -62,8 +52,8 @@ public class AddSnapshot {
         try {
             return returnVideo.getViews();
         } catch (NullPointerException e) {
-            Log.e(TAG, "videoSnapshot length < videosToLoad -> returning 0 from addToTopVideosList");
-            return 0;
+            Log.e(TAG, "[videoSnapshot length < videosToLoad] -> returning 1 from addToTopVideosList");
+            return 1;
         }
     }
 
@@ -75,22 +65,22 @@ public class AddSnapshot {
             for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {
                 if (counter == videosToLoad) {
                     returnVideo = videoSnapshot.getValue(Video.class);
+                    MainActivity.mHotVideoList.add(returnVideo);
                     break;
                 } else {
                     Video video = videoSnapshot.getValue(Video.class);
                     MainActivity.mHotVideoList.add(video);
-
                     counter++;
                 }
             }
         } catch (Exception e) {
-            Log.e(TAG, "Excpetion: " + e);
+            Log.e(TAG, "Exception: " + e);
         }
         try {
             return returnVideo.getPopularity();
         } catch (NullPointerException e) {
-            Log.e(TAG, "videoSnapshot length < videosToLoad -> returning 0 from addToHotVideosList");
-            return 0;
+            Log.e(TAG, "videoSnapshot length < videosToLoad -> returning -1 from addToHotVideosList");
+            return -1;
         }
     }
 
@@ -116,7 +106,7 @@ public class AddSnapshot {
             return returnVideo.getTimeUploaded();
         } catch (NullPointerException e) {
             Log.e(TAG, "videoSnapshot length < videosToLoad -> returning 0 from addToNewVideosList");
-            return 0;
+            return -1;
         }
     }
 }

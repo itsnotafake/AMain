@@ -37,7 +37,6 @@ import java.util.concurrent.FutureTask;
 import templar.atakr.R;
 import templar.atakr.databaseobjects.User;
 import templar.atakr.databaseobjects.Video;
-import templar.atakr.utility.Conversions;
 import templar.atakr.youtube.YoutubeData;
 
 public class ShareActivity extends AppCompatActivity {
@@ -64,7 +63,6 @@ public class ShareActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private ImageView mShareYoutubeThumbnail;
     private EditText mAtakrTitleEditText;
-    private EditText mGameEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){

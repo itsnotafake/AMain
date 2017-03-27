@@ -1,26 +1,16 @@
 package templar.atakr.design;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubeStandalonePlayer;
-import com.google.android.youtube.player.YouTubeThumbnailLoader;
-import com.google.android.youtube.player.YouTubeThumbnailView;
 
 import java.security.InvalidParameterException;
 
@@ -29,7 +19,6 @@ import templar.atakr.databaseobjects.Video;
 import templar.atakr.framework.MainActivity;
 import templar.atakr.framework.VideoPlayActivity;
 import templar.atakr.utility.ImageLoaderHelper;
-import templar.atakr.youtube.Config;
 
 /**
  * Created by Devin on 3/15/2017.
