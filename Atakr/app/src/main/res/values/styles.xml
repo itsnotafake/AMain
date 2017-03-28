@@ -32,18 +32,13 @@
         <item name="android:focusableInTouchMode">true</item>
         <item name="android:scrollHorizontally">true</item>
     </style>
-    <style name="list_normal_text">
-        <item name="android:maxLines">2</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:scrollHorizontally">true</item>
-    </style>
-    <style name="list_enlarged_text">
+
+    <style name="share_text_title">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tw__composer_black</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
-        <item name="android:layout_marginTop">@dimen/list_enlarged_text_vertical_margin</item>
-        <item name="android:layout_marginBottom">@dimen/list_enlarged_text_vertical_margin</item>
     </style>
 
     <!-- Video Play Activity -->

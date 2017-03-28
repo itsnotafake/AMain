@@ -95,7 +95,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
         public void setVideo(Video video){
             mVideo = video;
-            mTitle_TV.setText(mVideo.getYoutubeName());
+            if(mVideo.getAtakrName() == null || mVideo.getAtakrName().equals("")){
+                mTitle_TV.setText(mVideo.getYoutubeName());
+            }else{
+                mTitle_TV.setText(mVideo.getAtakrName());
+            }
             mNetworkImageView.setImageUrl(
                     mVideo.getYoutubeThumbailUrl(),
                     ImageLoaderHelper.getInstance(mContext).getImageLoader()

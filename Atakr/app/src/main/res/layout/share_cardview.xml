@@ -28,8 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/share_cardview_title"
             android:textColor="@color/tw__composer_black"
-            android:textSize="@dimen/share_cardView_title_textSize"
-            android:textStyle="bold"
+            style="@style/share_text_title"
             tools:text="Video Title"/>
 
         <TextView

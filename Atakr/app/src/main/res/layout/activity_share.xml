@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/share_profilepicture_CD"
-                android:src="@drawable/account_anon_icon" />
+                android:src="@mipmap/atakr_logo2" />
 
             <TextView
                 android:id="@+id/share_username"

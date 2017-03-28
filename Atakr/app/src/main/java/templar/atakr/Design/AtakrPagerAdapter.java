@@ -1,5 +1,6 @@
 package templar.atakr.design;
 
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,7 +16,7 @@ public class AtakrPagerAdapter extends FragmentPagerAdapter {
     private static final String TAG = AtakrPagerAdapter.class.getName();
     private final int PAGE_COUNT = 3;
 
-    private String tabTitles[] = new String[] {
+    private final String tabTitles[] = new String[] {
             "Top",
             "Trending",
             "New"

@@ -13,10 +13,7 @@ Atakr TODO (Long Term):
 IMMEDIATE TODO (FOR APP LAUNCH):
 -Fix infinite scrolling for Hot tab (might need to update views functionality and popularity functionality first)
 -Add icons to the tabs
--Change the banner
--Replace all instances of the user icon with the Atakr logo, so that the user feature can be implemented in full at a later date.
 -Create a search function.
 -Implement views and popularity.
--Use Atakr title.
--clean up code.
--add video categories
+-add widget
+-fix login screen
