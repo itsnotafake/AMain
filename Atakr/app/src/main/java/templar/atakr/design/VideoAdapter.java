@@ -18,6 +18,7 @@ import templar.atakr.R;
 import templar.atakr.databaseobjects.Video;
 import templar.atakr.framework.MainActivity;
 import templar.atakr.framework.VideoPlayActivity;
+import templar.atakr.sync.VideoUpdate;
 import templar.atakr.utility.ImageLoaderHelper;
 
 /**
@@ -108,11 +109,18 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
 
         @Override
         public void onClick(View v) {
-            Intent intent = new Intent(mContext, VideoPlayActivity.class);
-            intent.putExtra(VideoPlayActivity.YOUTUBE_VIDEO_ID, mVideo.getYoutubeVideoId());
-            mContext.startActivity(intent);
-            /*Intent intent = YouTubeStandalonePlayer.createVideoIntent(mActivity, Config.YOUTUBE_API_KEY, mVideo.getYoutubeVideoId());
-            mContext.startActivity(intent);*/
+            //This intent service handles updating view count and popularity.
+            //This happens off the UI thread because of the intent service
+            Intent videoUpdate = new Intent(mContext, VideoUpdate.class);
+            videoUpdate.putExtra(
+                    VideoUpdate.VIDEO_TO_UPDATE,
+                    mVideo.getYoutubeVideoId());
+            mContext.startService(videoUpdate);
+
+            //This intent starts the video play activity
+            Intent videoPlay = new Intent(mContext, VideoPlayActivity.class);
+            videoPlay.putExtra(VideoPlayActivity.YOUTUBE_VIDEO_ID, mVideo.getYoutubeVideoId());
+            mContext.startActivity(videoPlay);
         }
     }
 }

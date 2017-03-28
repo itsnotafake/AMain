@@ -46,6 +46,9 @@
 
         <service
             android:name=".sync.VideoSyncIntentService"/>
+
+        <service
+            android:name=".sync.VideoUpdate"/>
     </application>
 
 </manifest>
