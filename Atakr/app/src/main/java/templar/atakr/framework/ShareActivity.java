@@ -180,6 +180,7 @@ public class ShareActivity extends AppCompatActivity {
                             mYoutubeThumbnailUrl,
                             String.valueOf(-1)
                     );
+                    video.calculatePopularity();
                     mVideoDatabaseReference.child(mYoutubeId).setValue(video);
                     Toast.makeText(
                             getApplicationContext(),

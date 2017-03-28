@@ -14,11 +14,11 @@ public class Conversions {
         return viewsNegative * -1;
     }
 
-    public static long getNegTimeUploaded(long timeUploadedPositive){
+    public static double getNegTimeUploaded(double timeUploadedPositive){
         return timeUploadedPositive * -1;
     }
 
-    public static long getPosTimeUploaded(long timeUploadedNegative){
+    public static double getPosTimeUploaded(double timeUploadedNegative){
         return timeUploadedNegative * -1;
     }
 }

@@ -115,7 +115,7 @@ public class VideoBrowseFragment extends Fragment{
                                 VideoSyncIntentService.TOP_REQUEST);
                         break;
                     case 1:
-                        if(MainActivity.mStartHotQueryAt == -1){
+                        if(MainActivity.mStartHotQueryAt == 1){
                             loadMore = false;
                         }
                         intent.putExtra(

@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     //Variables for filtering data from Firebasedatabase
     public static long mStartTopQueryAt = 0;
     public static double mStartHotQueryAt = 0;
-    public static long mStartNewQueryAt = 0;
+    public static double mStartNewQueryAt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){

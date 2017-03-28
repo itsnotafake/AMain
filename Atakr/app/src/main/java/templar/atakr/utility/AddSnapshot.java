@@ -65,11 +65,12 @@ public class AddSnapshot {
             for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {
                 if (counter == videosToLoad) {
                     returnVideo = videoSnapshot.getValue(Video.class);
-                    MainActivity.mHotVideoList.add(returnVideo);
                     break;
                 } else {
                     Video video = videoSnapshot.getValue(Video.class);
-                    MainActivity.mHotVideoList.add(video);
+                    if(video.getPopularity() != -0.0001) {
+                        MainActivity.mHotVideoList.add(video);
+                    }
                     counter++;
                 }
             }
@@ -77,14 +78,15 @@ public class AddSnapshot {
             Log.e(TAG, "Exception: " + e);
         }
         try {
+            returnVideo.calculatePopularity();
             return returnVideo.getPopularity();
         } catch (NullPointerException e) {
-            Log.e(TAG, "videoSnapshot length < videosToLoad -> returning -1 from addToHotVideosList");
-            return -1;
+            Log.e(TAG, "videoSnapshot length < videosToLoad -> returning 1 from addToHotVideosList");
+            return 1;
         }
     }
 
-    public static long addToNewVideoList(DataSnapshot dataSnapshot, int videosToLoad) {
+    public static double addToNewVideoList(DataSnapshot dataSnapshot, int videosToLoad) {
         int counter = 1;
         Video returnVideo = null;
 

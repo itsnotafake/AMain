@@ -12,8 +12,8 @@ public class Video {
     private static final String TAG = Video.class.getSimpleName();
 
     /**
-     * Popularity and views are both stored as negative numbers so that Firebase Database
-     * can retrieve videos sorted descendingly by those categories(top & trending). (Currently,
+     * Popularity,views, and timeUploaded are all stored as negative numbers so that Firebase Database
+     * can retrieve videos sorted descendingly by those categories(top,trending,new). (Currently,
      * Firebases only retrieval in sorted order is done ascendingly).
      */
     private String youtubeVideoId;
@@ -25,7 +25,8 @@ public class Video {
     private long views;
     private String youtubeThumbailUrl;
     private double popularity; // views / (current time - time uploaded) = views per time unit (in ms)
-    private long timeUploaded;
+    private final double timeUploaded = Conversions.getNegTimeUploaded(System.currentTimeMillis());
+    private double timeSinceUpload;
 
     public Video(){
     }
@@ -37,19 +38,23 @@ public class Video {
         atakrName = aName;
         uploader = uploadedBy;
         youtubeThumbailUrl = yUrl;
-        views = Long.valueOf(v);
-        timeUploaded = Conversions.getNegTimeUploaded(System.currentTimeMillis());
+        views = Long.parseLong(v);
+        timeSinceUpload = (System.currentTimeMillis() - Conversions.getPosTimeUploaded(timeUploaded))/1000;
     }
 
     public void calculatePopularity(){
-        if(System.currentTimeMillis() - timeUploaded > 0) {
-            double v = views*100000;
-            double diffTime = (double)(System.currentTimeMillis() - timeUploaded)/10000000;
+        updateTimeSinceLoaded();
 
-            popularity = v/diffTime;
+        if(timeSinceUpload>0) {
+            double v = views*100;
+            popularity = v/timeSinceUpload;
         }else{
-            popularity = 0;
+            popularity = -0.0001;
         }
+    }
+
+    private void updateTimeSinceLoaded(){
+        timeSinceUpload = (System.currentTimeMillis() - Conversions.getPosTimeUploaded(timeUploaded))/1000;
     }
 
     public String getYoutubeVideoId(){ return youtubeVideoId;}
@@ -77,8 +82,7 @@ public class Video {
     public double getPopularity(){return popularity;}
     public void setPopularity(double f){popularity = f;}
 
-    public long getTimeUploaded(){return timeUploaded;}
-    public void setTimeUploaded(Long l){timeUploaded = l;}
+    public double getTimeUploaded(){return timeUploaded;}
 
     public String toString(){
         return youtubeName;
