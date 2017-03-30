@@ -1,6 +1,7 @@
 package templar.atakr.sync;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -11,8 +12,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+import templar.atakr.databaseobjects.Video;
+import templar.atakr.framework.AtakrWidgetProvider;
 import templar.atakr.framework.MainActivity;
 import templar.atakr.framework.VideoBrowseFragment;
+import templar.atakr.framework.VideoPlayActivity;
 import templar.atakr.utility.AddSnapshot;
 
 /**
@@ -44,6 +51,7 @@ public class VideoSyncIntentService extends IntentService {
     public static final int HOT_REQUEST = 220;
     public static final int NEW_REQUEST = 230;
     public static final int GAME_REQUEST = 310;
+    public static final int WIDGET_REQUEST = 320;
     public static final int ALL_REQUEST_MG = 410; //minus game
 
     public static final int NO_DELETE = 1000;
@@ -54,6 +62,7 @@ public class VideoSyncIntentService extends IntentService {
     public static final int ALL_DELETE = 4100;
 
     private FirebaseDatabase mFirebaseDatabase;
+    private Context mContext;
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -73,6 +82,7 @@ public class VideoSyncIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         int requestCode;
         int deleteCode;
+        mContext = this;
 
         try {
             requestCode = intent.getIntExtra(INTENT_REQUEST, 0);
@@ -99,6 +109,9 @@ public class VideoSyncIntentService extends IntentService {
                     return;
                 case GAME_REQUEST:
                     syncGame(gameTitle);
+                    return;
+                case WIDGET_REQUEST:
+                    syncWidget();
                     return;
                 case ALL_REQUEST_MG:
                     syncMainTop();
@@ -236,6 +249,32 @@ public class VideoSyncIntentService extends IntentService {
 
     }
 
+    private void syncWidget(){
+        Query sortedVideoQuery = AtakrWidgetProvider.mVideoReference
+                .orderByChild("timeUploaded")
+                .limitToFirst(VIDEOS_TO_LOAD);
+        sortedVideoQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int counter = 0;
+                Random random = new Random();
+                int randomInt = random.nextInt(VIDEOS_TO_LOAD-1);
+                for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {
+                    if(counter == randomInt){
+                        Video video = videoSnapshot.getValue(Video.class);
+                        Intent videoPlay = new Intent(mContext, VideoPlayActivity.class);
+                        videoPlay.putExtra(VideoPlayActivity.YOUTUBE_VIDEO_ID, video.getYoutubeVideoId());
+                        mContext.startActivity(videoPlay);
+                    }
+                    counter++;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
     public void initializeDatabase(int requestCode) {
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         switch(requestCode){
@@ -253,6 +292,9 @@ public class VideoSyncIntentService extends IntentService {
                 return;
             case GAME_REQUEST:
                 break;
+            case WIDGET_REQUEST:
+                AtakrWidgetProvider.mVideoReference =
+                        mFirebaseDatabase.getReference().child("Videos");
             case ALL_REQUEST_MG:
                 initializeDatabase(TOP_REQUEST);
                 initializeDatabase(HOT_REQUEST);

@@ -44,4 +44,7 @@
     <dimen name="share_editText_textSize">12sp</dimen>
     <dimen name="share_button_margin">8dp</dimen>
     <dimen name="share_button_textSize">16sp</dimen>
+
+    <!-- WIDGET DIMENS -->
+    <dimen name="widget_margin">8dp</dimen>
 </resources>

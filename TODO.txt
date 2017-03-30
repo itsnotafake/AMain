@@ -9,6 +9,7 @@ Atakr TODO (Long Term):
 -Make trending only show videos from last 3 days
 -fix login screen
 -make client side master app for more highly tuned popularity numbers
+-better configure the widget
 
 
 IMMEDIATE TODO (FOR APP LAUNCH):
