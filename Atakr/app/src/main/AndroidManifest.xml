@@ -18,6 +18,9 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".framework.SearchActivity"/>
         </activity>
 
         <activity
@@ -42,6 +45,17 @@
         <activity
             android:name=".framework.VideoPlayActivity"
             android:theme="@style/VideoPlayDialog">
+        </activity>
+
+        <activity
+            android:name=".framework.SearchActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
         </activity>
 
         <service

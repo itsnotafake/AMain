@@ -3,17 +3,19 @@ Atakr TODO (Long Term):
 	-make it so that game is attached the video object being stored
 	-create a list of recognized games
 	-give games images
--Right now when we load from the database we return 0 in AddSnapshot.doTopSnapshotToCV() if the number of children is less than 26. We need to figure out a way to incorporate handling this into infinite scrolling. It's a problem to do when infinite scrolling is added. Infinite scrolling TODO link is https://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView
--Change the way hot video syncs work so that only hot videos in the recent week get added.
 -List item thumbnails need to have dynamic Content descriptions (equivalent to their video titles).
 -Fix text style of share activity (in regards to ellipses, copy list_normal_style)
 -Add user functionality (user image, user page, likes and comments).
+-Make trending only show videos from last 3 days
+-fix login screen
+-make client side master app for more highly tuned popularity numbers
 
 
 IMMEDIATE TODO (FOR APP LAUNCH):
--Fix infinite scrolling for Hot tab (might need to update views functionality and popularity functionality first)
 -Add icons to the tabs
 -Create a search function.
--Implement views and popularity.
 -add widget
 -fix login screen
+
+AIzaSyA-eIZdztifqAcM7KKdjKIKyaXpmIIWpzM
+AIzaSyCwqaNsErhG73PXvs29aB_5S2IRu-fro9w

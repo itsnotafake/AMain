@@ -10,6 +10,7 @@
     <string name="action_settings">Title</string>
     <string name="toolbar_search">Search</string>
     <string name="toolbar_profile">Profile</string>
+    <string name="search_hint">Search Atakr Videos</string>
     <string name="navigation_menu_browse">Browse</string>
     <string name="navigation_menu_games">Games</string>
     <string name="navigation_menu_game_genre">Game Genre</string>

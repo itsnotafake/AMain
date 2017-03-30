@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import java.security.InvalidParameterException;
 import templar.atakr.R;
 import templar.atakr.databaseobjects.Video;
 import templar.atakr.framework.MainActivity;
+import templar.atakr.framework.SearchActivity;
 import templar.atakr.framework.VideoPlayActivity;
 import templar.atakr.sync.VideoUpdate;
 import templar.atakr.utility.ImageLoaderHelper;
@@ -56,6 +56,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
             case 2:
                 videoAdapterViewHolder.setVideo(MainActivity.mNewVideoList.get(position));
                 break;
+            case 3:
+                videoAdapterViewHolder.setVideo(SearchActivity.mSearchList.get(position));
             default:
                 throw new InvalidParameterException("Not a recognized page number, " +
                         "can't access its video list");
@@ -71,6 +73,8 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
                 return MainActivity.mHotVideoList.size();
             case 2:
                 return MainActivity.mNewVideoList.size();
+            case 3:
+                return SearchActivity.mSearchList.size();
             default:
                 throw new IllegalArgumentException("Not a recognized page, can't return item count");
         }
@@ -81,7 +85,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         return VIEW_TYPE_NORMAL;
     }
 
-    class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         Video mVideo;
         NetworkImageView mNetworkImageView;
         TextView mTitle_TV;

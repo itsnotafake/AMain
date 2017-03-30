@@ -38,7 +38,6 @@ public class AddSnapshot {
             for (DataSnapshot videoSnapshot : dataSnapshot.getChildren()) {
                 if (counter == videosToLoad) {
                     returnVideo = videoSnapshot.getValue(Video.class);;
-                    MainActivity.mTopVideoList.add(returnVideo);
                     break;
                 } else {
                     Video video = videoSnapshot.getValue(Video.class);
@@ -50,7 +49,11 @@ public class AddSnapshot {
             Log.e(TAG, "Excpetion: " + e);
         }
         try {
-            return returnVideo.getViews();
+            if(returnVideo.getViews() < -1){
+                return returnVideo.getViews()+1;
+            }else{
+                return 1;
+            }
         } catch (NullPointerException e) {
             Log.e(TAG, "[videoSnapshot length < videosToLoad] -> returning 1 from addToTopVideosList");
             return 1;

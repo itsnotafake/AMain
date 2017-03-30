@@ -130,7 +130,7 @@ public class VideoSyncIntentService extends IntentService {
              */
             sortedVideoQuery = MainActivity.mTopVideoDatabaseReference
                     .orderByChild("views")
-                    .startAt(MainActivity.mStartTopQueryAt, "youtubeVideoId")
+                    .startAt(MainActivity.mStartTopQueryAt, "views")
                     .limitToFirst(TOP_VIDEOS_TO_LOAD);
         } else {
             //This query orders videos descendingly by views, starting at the beginning,
@@ -159,7 +159,7 @@ public class VideoSyncIntentService extends IntentService {
 
     private void syncMainHot() {
         Query sortedVideoQuery;
-        double lastThreeDaysMilli = (System.currentTimeMillis() - 2.592e+8)*-1;
+        //double lastThreeDaysMilli = (System.currentTimeMillis() - 2.592e+8)*-1;
 
         //If we are adding additional data to the Content Provider we need to use
         //.startAt as part of the query builder, otherwise, if everything has been deleted,
@@ -184,7 +184,6 @@ public class VideoSyncIntentService extends IntentService {
                         dataSnapshot,
                         VIDEOS_TO_LOAD
                 );
-                Log.e(VIDEO_SYNC_TAG, "Size is: " + MainActivity.mHotVideoList.size());
                 Intent intent = new Intent(VideoBrowseFragment.VIDEO_DATA_BROADCAST + 1);
                 Log.e(VIDEO_SYNC_TAG, "Sending hot broadcast");
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);

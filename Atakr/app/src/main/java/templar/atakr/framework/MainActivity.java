@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         int id = menuItem.getItemId();
         switch(id){
             case(R.id.toolbar_search):
-                //TODO 'implement search fragment and action'
+                onSearchRequested();
             default:
                 return true;
         }
@@ -194,6 +194,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Initializes our drawer
+    //NOTE: THIS METHOD IS PRETTY MUCH EXACTLY COPIED IN SHAREACTIVITY
+    //ANY CHANGES MADE HERE SHOULD BE REPLICATED THERE
     private void initializeDrawer(){
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
         mToolbar = (Toolbar) findViewById(R.id.main_toolbar);
