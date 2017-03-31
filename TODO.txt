@@ -10,6 +10,7 @@ Atakr TODO (Long Term):
 -fix login screen
 -make client side master app for more highly tuned popularity numbers
 -better configure the widget
+-fix problem where app crashes when you try to scroll down immediately after refreshing
 
 
 IMMEDIATE TODO (FOR APP LAUNCH):
@@ -18,5 +19,9 @@ IMMEDIATE TODO (FOR APP LAUNCH):
 -add widget
 -fix login screen
 
-AIzaSyA-eIZdztifqAcM7KKdjKIKyaXpmIIWpzM
-AIzaSyCwqaNsErhG73PXvs29aB_5S2IRu-fro9w
+Search menu code:
+<item
+        android:id="@+id/toolbar_search"
+        android:title="@string/toolbar_search"
+        android:icon="@android:drawable/ic_menu_search"
+        atakr:actionViewClass="android.support.v7.widget.SearchView"/>
