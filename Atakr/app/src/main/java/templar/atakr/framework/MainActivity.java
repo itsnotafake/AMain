@@ -133,12 +133,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
         int id = menuItem.getItemId();
-        switch(id){
+        /*switch(id){
             case(R.id.toolbar_search):
                 onSearchRequested();
             default:
                 return true;
-        }
+        }*/
+        return true;
     }
 
     @Override

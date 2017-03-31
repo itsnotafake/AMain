@@ -3,12 +3,6 @@
     xmlns:atakr="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/toolbar_search"
-        android:title="@string/toolbar_search"
-        android:icon="@android:drawable/ic_menu_search"
-        atakr:actionViewClass="android.support.v7.widget.SearchView"/>
-
-    <item
         android:id="@+id/toolbar_profile"
         android:title="@string/toolbar_profile"
         android:icon="@mipmap/atakr_logo2"
