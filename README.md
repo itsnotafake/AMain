@@ -17,7 +17,7 @@ They way Atakr works is simple. Users that want to share content either upload t
 ## Screenshots
 
 ### Main Page
-![MainPage](https://github.com/itsnotafake/AMain/blob/master/ShareVideo.png)
+![MainPage](https://github.com/itsnotafake/AMain/blob/master/MainActivity.jpg)
 
 ### Video Play
 ![VideoPlay](https://github.com/itsnotafake/AMain/blob/master/VideoPlay.png)
