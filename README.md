@@ -13,3 +13,14 @@ Note: In the future, this project will be put on the App Store and removed from 
 Atakr is a video browsing/watching application that hosts videos on Youtube. It is intended that the video content uploaded to Atakr focuses on video games. Any sort of video game video is welcome. In the future, users will be able to browse these videos by video game title (Dota2, CSGO, League of Legends, etc) , the genre of the video uploaded (Comedy, Pro, Cool, etc), and the genre of the specific video game (FPS, MMORPG, RPG, RTS, etc).
 
 They way Atakr works is simple. Users that want to share content either upload their content to Youtube or find content on Youtube to share. They then click Youtube's share button and share to Atakr. At this stage they can rename the video if they so desire. The video will then be available on Atakr.
+
+## Screenshots
+
+### Main Page
+![MainPage](https://github.com/itsnotafake/AMain/blob/master/ShareVideo.png)
+
+### Video Play
+![VideoPlay](https://github.com/itsnotafake/AMain/blob/master/VideoPlay.png)
+
+### Share Video
+![ShareVideo](https://github.com/itsnotafake/AMain/blob/master/ShareVideo.png)
