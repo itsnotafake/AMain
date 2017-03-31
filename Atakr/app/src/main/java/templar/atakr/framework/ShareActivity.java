@@ -107,10 +107,9 @@ public class ShareActivity extends AppCompatActivity {
                 //Title and View have edited text rather than the raw values,
                 //so we create the editted strings and then place them in their
                 //respective text views
-                String titleString = titleLimit(mYoutubeTitle);
                 String viewString = mYoutubeViews + " Views";
 
-                shareYoutubeTitle.setText(titleString);
+                shareYoutubeTitle.setText(mYoutubeTitle);
                 shareYoutubeUploader.setText(mYoutubeUploader);
                 shareYoutubeViews.setText(viewString);
             }
@@ -270,12 +269,5 @@ public class ShareActivity extends AppCompatActivity {
         }catch(InterruptedException e){
             Log.e(TAG, "InterruptedException " + e);
         }
-    }
-
-    private static String titleLimit(String title){
-        if(title.length() > 20){
-            title = title.substring(0,19) + "...";
-        }
-        return title;
     }
 }
