@@ -87,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
     public static double mStartHotQueryAt = 0;
     public static double mStartNewQueryAt = 0;
 
+    //For setting tab icons
+    private final int images[] = new int[]{
+            R.drawable.ic_top,
+            R.drawable.ic_top,
+            R.drawable.ic_top,
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -176,8 +183,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
-                                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                                                new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                                     .setTheme(R.style.AppTheme)
                                     .setIsSmartLockEnabled(false)
                                     .build(),
@@ -235,9 +241,16 @@ public class MainActivity extends AppCompatActivity {
     //Initialize view pager along with tabs
     private void initializeViewPager(){
         mViewPager = (ViewPager)findViewById(R.id.main_viewpager);
-        mViewPager.setAdapter(new AtakrPagerAdapter(getSupportFragmentManager()));
+        mViewPager.setAdapter(new AtakrPagerAdapter(getSupportFragmentManager(), this));
         mTabLayout = (TabLayout) findViewById(R.id.main_tablayout);
         mTabLayout.setupWithViewPager(mViewPager);
+        /*try{
+            mTabLayout.getTabAt(0).setIcon(R.drawable.ic_top);
+            mTabLayout.getTabAt(1).setIcon(images[1]);
+            mTabLayout.getTabAt(2).setIcon(images[2]);
+        }catch(NullPointerException e){
+            Log.e(TAG, "Can't set tab icon, an image is null: " + e);
+        }*/
     }
 
     //Creates new User account in User database if new User

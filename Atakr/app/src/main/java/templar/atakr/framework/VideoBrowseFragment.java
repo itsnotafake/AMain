@@ -37,6 +37,7 @@ public class VideoBrowseFragment extends Fragment{
     private int mPage;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private CustomGridLayoutManager mLayoutManager;
     private VideoAdapter mVideoAdapter;
     private EndlessRecyclerViewScrollListener mScrollListener;
     private ProgressBar mProgressBar;
@@ -83,6 +84,7 @@ public class VideoBrowseFragment extends Fragment{
                 mProgressBar.setVisibility(View.GONE);
                 mVideoAdapter.notifyDataSetChanged();
                 mSwipeRefreshLayout.setRefreshing(false);
+                mLayoutManager.setScrollEnabled(true);
             }
         };
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(
@@ -91,11 +93,11 @@ public class VideoBrowseFragment extends Fragment{
 
     public void initializeRecyclerView(View view){
         final int columns = getResources().getInteger(R.integer.main_list_columns);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), columns);
+        mLayoutManager = new CustomGridLayoutManager(getContext(), columns);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.main_recyclerview);
-        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mVideoAdapter);
-        mScrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+        mScrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 boolean loadMore = true;
@@ -170,6 +172,7 @@ public class VideoBrowseFragment extends Fragment{
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                mLayoutManager.setScrollEnabled(false);
                 Intent intent = new Intent(getContext(), VideoSyncIntentService.class);
                 intent.putExtra(VideoSyncIntentService.INTENT_TITLE, "");
                 intent.putExtra(VideoSyncIntentService.INTENT_INIT_DB, true);
@@ -205,5 +208,22 @@ public class VideoBrowseFragment extends Fragment{
                 getActivity().startService(intent);
             }
         });
+    }
+
+    private class CustomGridLayoutManager extends GridLayoutManager{
+        private boolean isScrollEnabled = true;
+
+        public CustomGridLayoutManager(Context context, int columns){
+            super(context, columns);
+        }
+
+        public void setScrollEnabled(boolean flag){
+            this.isScrollEnabled = flag;
+        }
+
+        @Override
+        public boolean canScrollVertically(){
+            return isScrollEnabled && super.canScrollVertically();
+        }
     }
 }

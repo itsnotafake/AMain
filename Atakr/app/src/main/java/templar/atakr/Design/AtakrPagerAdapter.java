@@ -1,11 +1,19 @@
 package templar.atakr.design;
 
+import android.app.Application;
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.util.Log;
 
+import templar.atakr.R;
+import templar.atakr.framework.MainActivity;
 import templar.atakr.framework.VideoBrowseFragment;
 
 /**
@@ -15,6 +23,7 @@ import templar.atakr.framework.VideoBrowseFragment;
 public class AtakrPagerAdapter extends FragmentPagerAdapter {
     private static final String TAG = AtakrPagerAdapter.class.getName();
     private final int PAGE_COUNT = 3;
+    private Context mContext;
 
     private final String tabTitles[] = new String[] {
             "Top",
@@ -22,8 +31,9 @@ public class AtakrPagerAdapter extends FragmentPagerAdapter {
             "New"
     };
 
-    public AtakrPagerAdapter(FragmentManager fm){
+    public AtakrPagerAdapter(FragmentManager fm, Context context){
         super(fm);
+        mContext = context;
     }
 
     @Override
