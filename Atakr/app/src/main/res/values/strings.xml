@@ -27,6 +27,8 @@
     <string name="share_atakrTitle">(optional) New Title</string>
     <string name="share_atakrGame">(optional) Game</string>
     <string name="share_button">Post</string>
+    <string name="share_posted">Video Posted!</string>
+    <string name="share_already_uploaded">This video has already been uploaded</string>
 
     <!--VIDEO BROWSE FRAGMENT -->
     <string name="video_list_image_CD">Youtube Thumbnail</string>

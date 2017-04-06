@@ -11,6 +11,7 @@ Atakr TODO (Long Term):
 -make client side master app for more highly tuned popularity numbers
 -better configure the widget
 -fix problem where app crashes when you try to scroll down immediately after refreshing
+-move getting random video from service to widget class
 
 
 IMMEDIATE TODO (FOR APP LAUNCH):

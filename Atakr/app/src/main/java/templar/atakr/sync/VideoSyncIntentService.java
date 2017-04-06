@@ -263,6 +263,7 @@ public class VideoSyncIntentService extends IntentService {
                     if(counter == randomInt){
                         Video video = videoSnapshot.getValue(Video.class);
                         Intent videoPlay = new Intent(mContext, VideoPlayActivity.class);
+                        videoPlay.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         videoPlay.putExtra(VideoPlayActivity.YOUTUBE_VIDEO_ID, video.getYoutubeVideoId());
                         mContext.startActivity(videoPlay);
                     }

@@ -107,7 +107,7 @@ public class ShareActivity extends AppCompatActivity {
                 //Title and View have edited text rather than the raw values,
                 //so we create the editted strings and then place them in their
                 //respective text views
-                String viewString = mYoutubeViews + " Views";
+                String viewString = mYoutubeViews + " " + getResources().getString(R.string.share_cardview_views);
 
                 shareYoutubeTitle.setText(mYoutubeTitle);
                 shareYoutubeUploader.setText(mYoutubeUploader);
@@ -147,8 +147,7 @@ public class ShareActivity extends AppCompatActivity {
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
-                                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()))
+                                    .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build()))
                                     .setTheme(R.style.AppTheme)
                                     .setIsSmartLockEnabled(false)
                                     .build(),
@@ -183,13 +182,13 @@ public class ShareActivity extends AppCompatActivity {
                     mVideoDatabaseReference.child(mYoutubeId).setValue(video);
                     Toast.makeText(
                             getApplicationContext(),
-                            "Video Posted!",
+                            R.string.share_posted,
                             Toast.LENGTH_SHORT
                     ).show();
                 }else{
                     Toast.makeText(
                             getApplicationContext(),
-                            "This video has already been uploaded",
+                            R.string.share_already_uploaded,
                             Toast.LENGTH_SHORT
                     ).show();
                 }
