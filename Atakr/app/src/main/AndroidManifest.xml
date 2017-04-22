@@ -25,6 +25,9 @@
         </activity>
 
         <activity
+            android:name=".framework.ProfileActivity"/>
+
+        <activity
             android:name=".framework.ShareActivity"
             android:theme="@style/AtakrDialog">
             <intent-filter>

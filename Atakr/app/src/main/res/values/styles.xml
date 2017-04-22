@@ -17,6 +17,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
+    <style name="LoginTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/login_primary</item>
+    </style>
+
     <!-- Styles used in the main video list -->
     <style name="list_text">
         <item name="android:textSize">14sp</item>

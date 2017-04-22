@@ -2,7 +2,7 @@
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_drawer_layout"
+    android:id="@+id/drawer_layout"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
@@ -29,13 +29,5 @@
             android:visibility="gone"/>
     </android.support.design.widget.CoordinatorLayout>
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/main_drawer_navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/main_navigation_header"
-        app:menu="@menu/main_navigation_menu">
-    </android.support.design.widget.NavigationView>
+    <include layout="@layout/drawer_navigation"/>
 </android.support.v4.widget.DrawerLayout>

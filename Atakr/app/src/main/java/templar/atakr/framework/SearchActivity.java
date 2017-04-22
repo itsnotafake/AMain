@@ -80,7 +80,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private void initializeDrawer() {
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.search_drawer_layout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.search_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.super_toolbar);
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(
                 this,

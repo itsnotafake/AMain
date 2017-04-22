@@ -12,6 +12,7 @@ Atakr TODO (Long Term):
 -better configure the widget
 -fix problem where app crashes when you try to scroll down immediately after refreshing
 -move getting random video from service to widget class
+-handle network connectivity (ex. list errors when internet is lost then regained)
 
 
 IMMEDIATE TODO (FOR APP LAUNCH):
