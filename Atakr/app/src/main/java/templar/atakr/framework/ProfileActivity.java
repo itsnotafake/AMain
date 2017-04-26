@@ -27,6 +27,7 @@ import com.google.firebase.storage.UploadTask;
 import java.io.File;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import templar.atakr.R;
@@ -45,7 +46,7 @@ public class ProfileActivity extends SuperActivity{
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE_AND_CAMERA = 200;
 
     private StorageReference mProfilePictureReference;
-    private ImageView mProfileImage;
+    private CircleImageView mProfileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -71,7 +72,7 @@ public class ProfileActivity extends SuperActivity{
     }
 
     private void initializeHeader(){
-        ImageView profile_image = (ImageView) findViewById(R.id.profile_picture);
+        mProfileImage = (CircleImageView) findViewById(R.id.profile_picture);
         TextView username_tv = (TextView) findViewById(R.id.profile_username);
         TextView shared_tv = (TextView) findViewById(R.id.profile_shared);
         TextView followers_tv = (TextView) findViewById(R.id.profile_followers);
@@ -85,13 +86,13 @@ public class ProfileActivity extends SuperActivity{
         shared_tv.setText(getString(R.string.profile_shared_none));
         followers_tv.setText(getString(R.string.profile_followers_none));
 
-        mProfileImage = profile_image;
         Glide.with(this)
                 .using(new FirebaseImageLoader())
                 .load(mProfilePictureReference)
-                .into(profile_image);
+                .dontAnimate()
+                .into(mProfileImage);
 
-        profile_image.setOnClickListener(new View.OnClickListener() {
+        mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handleProfilePicturePermissions();

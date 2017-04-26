@@ -13,13 +13,7 @@ Atakr TODO (Long Term):
 -fix problem where app crashes when you try to scroll down immediately after refreshing
 -move getting random video from service to widget class
 -handle network connectivity (ex. list errors when internet is lost then regained)
-
-
-IMMEDIATE TODO (FOR APP LAUNCH):
--Add icons to the tabs
--Create a search function.
--add widget
--fix login screen
+-save profile picture locally
 
 Search menu code:
 <item

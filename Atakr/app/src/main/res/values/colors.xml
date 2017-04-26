@@ -14,6 +14,9 @@
     <color name="list_text_shadow">#000000</color>
     <color name="list_item_title_background">#99000000</color>
 
+    <color name="black_text">#FF000000</color>
+    <color name="dark_grey_text">#616161</color>
+
     <!-- Login Colors -->
     <color name="login_primary">#424242</color>
 </resources>
