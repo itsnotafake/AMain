@@ -3,8 +3,10 @@ package templar.atakr.framework;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +16,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
+import java.util.List;
+
+import pl.aprilapps.easyphotopicker.DefaultCallback;
 import pl.aprilapps.easyphotopicker.EasyImage;
 import templar.atakr.R;
 
@@ -30,12 +42,30 @@ public class ProfileActivity extends SuperActivity{
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 101;
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE_AND_CAMERA = 200;
 
+    private StorageReference mStorageReference;
+    private StorageReference mUserReference;
+    private StorageReference mProfilePictureReference;
+    private String mUserID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        initializeFirebaseStorage();
         initializeDrawer(mActivity);
         initializeHeader();
+    }
+
+    private void initializeFirebaseStorage(){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        mStorageReference = storage.getReference();
+        SharedPreferences sharedPreferences = mActivity.getSharedPreferences(
+                getString(R.string.preference_userID_key),
+                Context.MODE_PRIVATE);
+        mUserID = sharedPreferences.getString(getString(R.string.preference_userID_key), "DEFAULT");
+        mUserReference = mStorageReference.child(mUserID);
+        mProfilePictureReference = mUserReference.child("profilepicture.jpg");
     }
 
     private void initializeHeader(){
@@ -143,5 +173,43 @@ public class ProfileActivity extends SuperActivity{
                 Log.e(TAG, "Not a valid Permissions Result Request Code");
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+
+        EasyImage.handleActivityResult(requestCode, resultCode, data, this, new DefaultCallback() {
+            @Override
+            public void onImagePickerError(Exception e, EasyImage.ImageSource source, int type){
+                Log.e(TAG, "Exception: " + e + ", ImagePickerError");
+            }
+            @Override
+            public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
+                onPhotosReturned(imageFiles);
+            }
+        });
+    }
+
+    /**
+     * Handles the selected image. Uploads it to FirebaseStorage then sets the profile picture.
+     * @param imageFiles
+     */
+    private void onPhotosReturned(List<File> imageFiles){
+        Uri picture = android.net.Uri.parse(imageFiles.get(0).toURI().toString());
+        UploadTask uploadTask = mProfilePictureReference.putFile(picture);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "Hello, BEEP BOOP, uploadTask failure");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.e(TAG, "Hello, BEEP BOOP LETTUCE, uploadTask success");
+            }
+        });
+    }
+
+
 
 }

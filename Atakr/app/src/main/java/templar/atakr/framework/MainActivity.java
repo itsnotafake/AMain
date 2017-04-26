@@ -72,6 +72,7 @@ public class MainActivity extends SuperActivity {
     //Data variables & Variables for holding the video data
     // synced from FBDB
     public static String mUsername;
+    public static String mUserID;
     public static ArrayList<Video> mTopVideoList = new ArrayList<>();
     public static ArrayList<Video> mHotVideoList = new ArrayList<>();
     public static ArrayList<Video> mNewVideoList = new ArrayList<>();
@@ -198,12 +199,24 @@ public class MainActivity extends SuperActivity {
                     mUserDatabaseReference.child(firebaseUserID).setValue(user);
                 }
                 mUsername = firebaseDisplayName;
+                mUserID = firebaseUserID;
+
+                //Save the user's username
                 SharedPreferences sharedPref = mContext.getSharedPreferences(
                         getString(R.string.preference_username_key),
                         Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(getString(R.string.preference_username_key), mUsername);
                 editor.apply();
+
+                //Save the user's ID
+                sharedPref = mContext.getSharedPreferences(
+                        getString(R.string.preference_userID_key),
+                        Context.MODE_PRIVATE);
+                editor = sharedPref.edit();
+                editor.putString(getString(R.string.preference_userID_key), mUserID);
+                editor.apply();
+
                 TextView tv = (TextView)findViewById(R.id.main_navigation_user);
                 tv.setText(mUsername);
             }
