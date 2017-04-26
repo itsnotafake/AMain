@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -42,10 +44,8 @@ public class ProfileActivity extends SuperActivity{
     private final int MY_PERMISSIONS_REQUEST_CAMERA = 101;
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE_AND_CAMERA = 200;
 
-    private StorageReference mStorageReference;
-    private StorageReference mUserReference;
     private StorageReference mProfilePictureReference;
-    private String mUserID;
+    private ImageView mProfileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -57,15 +57,17 @@ public class ProfileActivity extends SuperActivity{
         initializeHeader();
     }
 
+    //Get a reference to the profilepicture file in storage
     private void initializeFirebaseStorage(){
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        mStorageReference = storage.getReference();
         SharedPreferences sharedPreferences = mActivity.getSharedPreferences(
                 getString(R.string.preference_userID_key),
                 Context.MODE_PRIVATE);
-        mUserID = sharedPreferences.getString(getString(R.string.preference_userID_key), "DEFAULT");
-        mUserReference = mStorageReference.child(mUserID);
-        mProfilePictureReference = mUserReference.child("profilepicture.jpg");
+        String userID = sharedPreferences.getString(getString(R.string.preference_userID_key), "DEFAULT");
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        mProfilePictureReference = storage.getReference()
+                .child(userID)
+                .child("profilepicture.jpg");
     }
 
     private void initializeHeader(){
@@ -82,6 +84,12 @@ public class ProfileActivity extends SuperActivity{
         username_tv.setText(username);
         shared_tv.setText(getString(R.string.profile_shared_none));
         followers_tv.setText(getString(R.string.profile_followers_none));
+
+        mProfileImage = profile_image;
+        Glide.with(this)
+                .using(new FirebaseImageLoader())
+                .load(mProfilePictureReference)
+                .into(profile_image);
 
         profile_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,6 +213,10 @@ public class ProfileActivity extends SuperActivity{
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Glide.with(mActivity)
+                        .using(new FirebaseImageLoader())
+                        .load(mProfilePictureReference)
+                        .into(mProfileImage);
                 Log.e(TAG, "Hello, BEEP BOOP LETTUCE, uploadTask success");
             }
         });

@@ -24,6 +24,7 @@
                 android:id="@+id/profile_picture"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:scaleType="fitXY"
                 android:contentDescription="@string/profile_picture_CD"
                 android:src="@drawable/account_anon_icon" />
 
