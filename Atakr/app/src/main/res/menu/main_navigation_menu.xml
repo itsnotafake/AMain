@@ -3,6 +3,16 @@
     <group
         android:checkableBehavior="single">
         <item
+            android:id="@+id/navigation_menu_browse"
+            android:title="@string/navigation_menu_browse">
+            <menu>
+                <item
+                    android:id="@+id/navigation_menu_home"
+                    android:title="@string/navigation_menu_home"/>
+            </menu>
+        </item>
+
+        <item
             android:id="@+id/navigation_menu_account"
             android:title="@string/navigation_menu_account">
             <menu>

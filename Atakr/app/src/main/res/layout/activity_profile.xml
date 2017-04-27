@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -27,38 +26,38 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_margin="4dp"
-                app:civ_border_width="2dp"
-                app:civ_border_color="#FF000000"
                 android:contentDescription="@string/profile_picture_CD"
-                android:src="@drawable/account_anon_icon" />
+                android:src="@drawable/account_anon_icon"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="2dp"
+                android:layout_marginLeft="@dimen/profile_header_margin_left"
+                android:layout_marginStart="@dimen/profile_header_margin_left"
+                android:layout_marginTop="@dimen/profile_header_margin_top"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/profile_username"
+                    style="@style/profile_title_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/profile_title_text"
                     tools:text="Username" />
 
                 <TextView
                     android:id="@+id/profile_shared"
+                    style="@style/profile_subtitle_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/profile_subtitle_text"
                     tools:text="Videos Shared" />
 
                 <TextView
                     android:id="@+id/profile_followers"
+                    style="@style/profile_subtitle_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/profile_subtitle_text"
                     tools:text="Followers" />
             </LinearLayout>
         </LinearLayout>

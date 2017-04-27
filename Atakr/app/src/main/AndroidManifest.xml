@@ -16,7 +16,8 @@
 
         <activity
             android:name=".framework.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="@string/main_activity_label">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,7 +28,8 @@
         </activity>
 
         <activity
-            android:name=".framework.ProfileActivity"/>
+            android:name=".framework.ProfileActivity"
+            android:label="@string/profile_activity_label"/>
 
         <activity
             android:name=".framework.ShareActivity"
