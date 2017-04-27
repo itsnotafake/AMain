@@ -2,6 +2,7 @@
     <string name="app_name" translatable="false">Atakr</string>
     <string name="preference_userID_key" translatable="false">templar.atakr.PREFERENCE_USERID_KEY</string>
     <string name="preference_username_key" translatable="false">templar.atakr.PREFERENCE_USERNAME_KEY</string>
+    <string name="preference_profile_image_sig" translatable="false">templar.atakr.PREFERENCE_PROFILE_IMAGE_SIG</string>
 
     <!-- MAIN ACTIVITY STRINGS -->
     <string name="drawer_open">side menu opened</string>

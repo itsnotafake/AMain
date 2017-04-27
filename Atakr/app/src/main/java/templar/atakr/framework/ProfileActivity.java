@@ -15,8 +15,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -82,15 +84,29 @@ public class ProfileActivity extends SuperActivity{
                 Context.MODE_PRIVATE);
         String username = sharedPref.getString(getString(R.string.preference_username_key), "DEFAULT");
 
+        sharedPref = mActivity.getSharedPreferences(
+                getString(R.string.preference_profile_image_sig),
+                Context.MODE_PRIVATE);
+        String profile_image_sig =
+                sharedPref.getString(getString(R.string.preference_profile_image_sig), "DEFAULT");
+
+
         username_tv.setText(username);
         shared_tv.setText(getString(R.string.profile_shared_none));
         followers_tv.setText(getString(R.string.profile_followers_none));
 
-        Glide.with(this)
-                .using(new FirebaseImageLoader())
-                .load(mProfilePictureReference)
-                .dontAnimate()
-                .into(mProfileImage);
+        if(!profile_image_sig.equals("DEFAULT")) {
+            Glide.with(mActivity)
+                    .using(new FirebaseImageLoader())
+                    .load(mProfilePictureReference)
+                    .signature(new StringSignature(profile_image_sig))
+                    .into(mProfileImage);
+        }else{
+            Glide.with(mActivity)
+                    .using(new FirebaseImageLoader())
+                    .load(mProfilePictureReference)
+                    .into(mProfileImage);
+        }
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +210,7 @@ public class ProfileActivity extends SuperActivity{
             }
             @Override
             public void onImagesPicked(@NonNull List<File> imageFiles, EasyImage.ImageSource source, int type) {
+                Toast.makeText(mActivity, "Updating Profile Picture...", Toast.LENGTH_SHORT).show();
                 onPhotosReturned(imageFiles);
             }
         });
@@ -203,7 +220,7 @@ public class ProfileActivity extends SuperActivity{
      * Handles the selected image. Uploads it to FirebaseStorage then sets the profile picture.
      * @param imageFiles
      */
-    private void onPhotosReturned(List<File> imageFiles){
+    private void onPhotosReturned(final List<File> imageFiles){
         Uri picture = android.net.Uri.parse(imageFiles.get(0).toURI().toString());
         UploadTask uploadTask = mProfilePictureReference.putFile(picture);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -214,15 +231,25 @@ public class ProfileActivity extends SuperActivity{
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Glide.with(mActivity)
-                        .using(new FirebaseImageLoader())
-                        .load(mProfilePictureReference)
-                        .into(mProfileImage);
-                Log.e(TAG, "Hello, BEEP BOOP LETTUCE, uploadTask success");
+                SharedPreferences sharedPref = mActivity.getSharedPreferences(
+                        getString(R.string.preference_profile_image_sig),
+                        Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(
+                        getString(R.string.preference_profile_image_sig),
+                        String.valueOf(imageFiles.get(0)));
+                editor.apply();
+
+                try {
+                    Glide.with(mActivity)
+                            .using(new FirebaseImageLoader())
+                            .load(mProfilePictureReference)
+                            .signature(new StringSignature(String.valueOf(imageFiles.get(0))))
+                            .into(mProfileImage);
+                }catch(IllegalArgumentException e){
+                    Log.e(TAG, "Updated Firebase profile picture while not in profile Activity, success");
+                }
             }
         });
     }
-
-
-
 }
