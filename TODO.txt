@@ -14,6 +14,7 @@ Atakr TODO (Long Term):
 -move getting random video from service to widget class
 -handle network connectivity (ex. list errors when internet is lost then regained)
 -save profile picture locally
+-timeout swipe refresh ~ 2.5 seconds
 
 Search menu code:
 <item

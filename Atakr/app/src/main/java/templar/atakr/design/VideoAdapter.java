@@ -1,5 +1,7 @@
 package templar.atakr.design;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -7,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -45,7 +48,17 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
     }
 
     @Override
-    public void onBindViewHolder(VideoAdapterViewHolder videoAdapterViewHolder, int position){
+    public void onBindViewHolder(final VideoAdapterViewHolder videoAdapterViewHolder, int position){
+        videoAdapterViewHolder.mListItemExtended.setVisibility(View.GONE);
+        videoAdapterViewHolder.mView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                videoAdapterViewHolder.mListItemExtended.setVisibility(
+                        videoAdapterViewHolder.mListItemExtended.getVisibility() == View.VISIBLE
+                                ? View.GONE : View.VISIBLE);
+                return true;
+            }
+        });
         switch(mPage){
             case 0:
                 videoAdapterViewHolder.setVideo(MainActivity.mTopVideoList.get(position));
@@ -85,24 +98,31 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoAdapter
         return VIEW_TYPE_NORMAL;
     }
 
-    public class VideoAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class VideoAdapterViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener{
         Video mVideo;
         NetworkImageView mNetworkImageView;
         TextView mTitle_TV;
+
+        View mView;
+        RelativeLayout mListItemExtended;
 
         VideoAdapterViewHolder(View view, int viewType) {
             super(view);
             mTitle_TV = (TextView) view.findViewById(R.id.video_list_title);
             mNetworkImageView = (NetworkImageView) view.findViewById(R.id.video_list_image);
 
+            mView = view;
+            mListItemExtended = (RelativeLayout) view.findViewById(R.id.list_item_extended);
+
             view.setOnClickListener(this);
         }
 
-        public void setVideo(Video video){
+        public void setVideo(Video video) {
             mVideo = video;
-            if(mVideo.getAtakrName() == null || mVideo.getAtakrName().equals("")){
+            if (mVideo.getAtakrName() == null || mVideo.getAtakrName().equals("")) {
                 mTitle_TV.setText(mVideo.getYoutubeName());
-            }else{
+            } else {
                 mTitle_TV.setText(mVideo.getAtakrName());
             }
             mNetworkImageView.setImageUrl(
